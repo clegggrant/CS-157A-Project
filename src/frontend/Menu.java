@@ -1,5 +1,8 @@
 package frontend;
 import javax.swing.*;
+
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 
 /**
@@ -8,7 +11,11 @@ import java.awt.GridLayout;
  * @author clegg
  *
  */
+
 public class Menu {
+	
+	public final Font font = new Font("Arial", Font.PLAIN, 20);
+	
 	public Menu(){
 		JFrame jf = initializeJF();
 		addButtons(jf);
@@ -21,7 +28,7 @@ public class Menu {
 	 */
 	private JFrame initializeJF(){
 		JFrame output = new JFrame("Bank Management System");
-		output.setSize(1000,500);
+		output.setSize(1500,500);
 		output.setLayout(new GridLayout(4,4));
 		output.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		return output;
@@ -38,12 +45,14 @@ public class Menu {
 		jf.add(belowMinBalance);
 		
 		JButton allBalances = new JButton("View All Balances");
+		//allBalances.setFont(font);
+
 		jf.add(allBalances);
 		
-		JButton allEmpsWithAccts = new JButton("List Employees with Accoutns");
+		JButton allEmpsWithAccts = new JButton("List Employees with Accounts");
 		jf.add(allEmpsWithAccts);
 		
-		JButton avgSalary = new JButton("View Avg Salary");
+		JButton avgSalary = new JButton("View Above Avg Salary");
 		jf.add(avgSalary);
 		
 		JButton belowAvgSalary = new JButton("View Below Avg Salary");
@@ -81,5 +90,13 @@ public class Menu {
 		
 		JButton fire = new JButton("Fire Employee");
 		jf.add(fire);
+		
+		for(int i = 0; i < jf.getContentPane().getComponentCount(); i++){
+			
+			if(jf.getContentPane().getComponents()[i] instanceof JButton){
+				jf.getContentPane().getComponents()[i].setFont(font);
+			}
+		}
+		
 	}
 }
