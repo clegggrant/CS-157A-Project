@@ -1,6 +1,7 @@
 package frontend;
 
 import java.awt.FlowLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,8 +13,8 @@ public class EmployeeFrame extends JFrame{
 
 	public EmployeeFrame() {
 		
-		setSize(300,230);
-		
+		this.setSize(300,230);
+		this.setLocationRelativeTo(null);
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());

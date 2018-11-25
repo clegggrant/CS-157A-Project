@@ -1,12 +1,15 @@
 package frontend;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -22,12 +25,14 @@ import java.io.IOException;
 
 public class Menu extends JFrame{
 	
-	public final Font font = new Font("Arial", Font.PLAIN, 20);
+	public static final Font FONT = new Font("Arial", Font.PLAIN, 30);
 	
 	public Menu(){
 		JFrame jf = initializeJF();
 		addButtons(jf);
+		//jf.pack();
 		jf.setVisible(true);
+	
 	}
 	
 	/**
@@ -35,11 +40,16 @@ public class Menu extends JFrame{
 	 * @return output The JFrame menu to be displayed
 	 */
 	private JFrame initializeJF(){
-		JFrame output = new JFrame("Bank Management System");
-		output.setSize(300,130);
+		JFrame menuFrame = new JFrame("Bank Management System");
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	    int height = screenSize.height;
+	    int width = screenSize.width;
+	    menuFrame.setSize(width/4, height/4);
 	
-		output.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		return output;
+		menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		menuFrame.setLocationRelativeTo(null);
+		
+		return menuFrame;
 	}
 	
 	//TODO: Add action listeners to buttons 
@@ -52,13 +62,14 @@ public class Menu extends JFrame{
 		
 		//create panel to hold all buttons in flow layout
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout());
-		
+		buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
+		buttonPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
 		
 		//create empManag button
 		JButton employeeManagement = new JButton("Employee Management");
-		buttonPanel.add(employeeManagement);
-		//create action listener for the empManag button
+		employeeManagement.setFont(FONT);
+		employeeManagement.setAlignmentX(Component.CENTER_ALIGNMENT);
 		employeeManagement.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// dispose of the current frame
@@ -68,10 +79,11 @@ public class Menu extends JFrame{
 				JFrame empManagement = new EmployeeFrame();
 			}
 		});
-		
+
 		
 		JButton transactionInfo = new JButton("Transaction Information");
-		buttonPanel.add(transactionInfo);
+		transactionInfo.setFont(FONT);
+		transactionInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		transactionInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// dispose of the current frame
@@ -81,10 +93,11 @@ public class Menu extends JFrame{
 				JFrame transacInfo = new TransactionFrame();
 			}
 		});
-		
 
+		
 		JButton accountInfo = new JButton("Account Information");
-		buttonPanel.add(accountInfo);
+		accountInfo.setFont(FONT);
+		accountInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		accountInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// dispose of the current frame
@@ -95,14 +108,12 @@ public class Menu extends JFrame{
 			}
 		});
 		
-		
-		for(int i = 0; i < jf.getContentPane().getComponentCount(); i++){
-			
-			if(jf.getContentPane().getComponents()[i] instanceof JButton){
-				jf.getContentPane().getComponents()[i].setFont(font);
-			}
-		}
-		
+		buttonPanel.add(employeeManagement);
+		buttonPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		buttonPanel.add(transactionInfo);
+		buttonPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		buttonPanel.add(accountInfo);
+
 		jf.add(buttonPanel);
 	}
 }
