@@ -19,7 +19,7 @@ import java.io.IOException;
 /**
  * Represents the interface the user will use when running
  * the application
- * @author clegg
+ * @author clegg, Yu Jun Zhao
  *
  */
 
@@ -68,7 +68,6 @@ public class Menu extends JFrame{
 		
 		//create empManag button
 		JButton employeeManagement = new JButton("Employee Management");
-		employeeManagement.setFont(FONT);
 		employeeManagement.setAlignmentX(Component.CENTER_ALIGNMENT);
 		employeeManagement.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -82,7 +81,6 @@ public class Menu extends JFrame{
 
 		
 		JButton transactionInfo = new JButton("Transaction Information");
-		transactionInfo.setFont(FONT);
 		transactionInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		transactionInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -96,7 +94,6 @@ public class Menu extends JFrame{
 
 		
 		JButton accountInfo = new JButton("Account Information");
-		accountInfo.setFont(FONT);
 		accountInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		accountInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -113,7 +110,15 @@ public class Menu extends JFrame{
 		buttonPanel.add(transactionInfo);
 		buttonPanel.add(Box.createRigidArea(new Dimension(0,10)));
 		buttonPanel.add(accountInfo);
-
+		
+		// CHANGE THE FONTS
+		for(int i = 0; i < buttonPanel.getComponentCount(); i++){
+			
+			if(buttonPanel.getComponents()[i] instanceof JButton){
+				buttonPanel.getComponents()[i].setFont(Menu.FONT);
+			}
+		}
+		
 		jf.add(buttonPanel);
 	}
 }

@@ -1,7 +1,8 @@
 package frontend;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,16 +13,19 @@ import javax.swing.JPanel;
 public class EmployeeFrame extends JFrame{
 
 	public EmployeeFrame() {
-		
-		this.setSize(300,230);
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	    int height = screenSize.height;
+	    int width = screenSize.width;
+		this.setSize(width/3,height/3);
 		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
 		
-		
+
 		JButton viewEmpAcc = new JButton("View Employees With Accounts");
-		buttonPanel.add(viewEmpAcc);
 		viewEmpAcc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// dispose of the current frame
@@ -34,65 +38,49 @@ public class EmployeeFrame extends JFrame{
 		});
 		
 		JButton viewEmpAbove = new JButton("View Employees With Above Avg Salary");
-		buttonPanel.add(viewEmpAbove);
 		viewEmpAbove.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// dispose of the current frame
 				dispose();
-
-				//call whatever frame or perform whatever action
 				System.out.println("Viewing Employees with Below Avg Salary");
 				
 			}
 		});
 		
 		JButton viewEmpBelow = new JButton("View Employees With Below Avg Salary");
-		buttonPanel.add(viewEmpBelow);
 		viewEmpBelow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// dispose of the current frame
 				dispose();
 
-				//call whatever frame or perform whatever action
 				System.out.println("Viewing Employees with Below Avg Salary");
 				
 			}
 		});
 		
 		JButton salExpense = new JButton("Calculate Salary Expense");
-		buttonPanel.add(salExpense);
 		salExpense.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// dispose of the current frame
 				dispose();
 
-				//call whatever frame or perform whatever action
 				System.out.println("Calculating Salary Expense");
 				
 			}
 		});
 
 		JButton hireEmp = new JButton("Hire Employees");
-		buttonPanel.add(hireEmp);
 		hireEmp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// dispose of the current frame
 				dispose();
 
-				//call whatever frame or perform whatever action
 				System.out.println("Hiring an Employee");
 				
 			}
 		});
 		
 		JButton fireEmp = new JButton("Fire Employees");
-		buttonPanel.add(fireEmp);
 		fireEmp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// dispose of the current frame
 				dispose();
 
-				//call whatever frame or perform whatever action
 				System.out.println("Firing an Employee");
 			}
 		});
@@ -100,22 +88,34 @@ public class EmployeeFrame extends JFrame{
 		
 		
 		JButton mainMenu = new JButton("Main Menu");
-		buttonPanel.add(mainMenu);
 		mainMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// dispose of the current frame
 				dispose();
 
-				//call the employee management frame
 				System.out.println("Calling the Main Menu");
 				JFrame menu = new Menu();
 			}
 		});
 		
 		
-		add(buttonPanel);
-		setVisible(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		buttonPanel.add(viewEmpAcc);
+		buttonPanel.add(viewEmpAbove);
+		buttonPanel.add(viewEmpBelow);
+		buttonPanel.add(salExpense);
+		buttonPanel.add(hireEmp);
+		buttonPanel.add(fireEmp);
+		buttonPanel.add(mainMenu);
+
+		// CHANGE THE FONTS
+		for(int i = 0; i < buttonPanel.getComponentCount(); i++){
+			
+			if(buttonPanel.getComponents()[i] instanceof JButton){
+				buttonPanel.getComponents()[i].setFont(Menu.FONT);
+			}
+		}
+		
+		this.add(buttonPanel);
+		this.setVisible(true);
 
 	}
 }
