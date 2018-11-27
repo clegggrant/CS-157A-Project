@@ -1,12 +1,15 @@
 package frontend;
 
 import java.awt.FlowLayout;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import backend.EmployeeFunctions;
 
 public class EmployeeFrame extends JFrame{
 
@@ -27,8 +30,9 @@ public class EmployeeFrame extends JFrame{
 				dispose();
 
 				//call whatever frame or perform whatever action
-				System.out.println("Viewing Employees with Accounts");
-				
+				System.out.println("Viewing Employees with Accounts and calling function");
+				boolean result = EmployeeFunctions.get_employees_with_accounts();
+				System.out.println("The result from the function connection: " + result);
 			}
 		});
 		
