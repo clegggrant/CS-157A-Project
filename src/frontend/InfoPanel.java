@@ -1,7 +1,9 @@
 package frontend;
 
 import java.awt.CardLayout;
+import java.awt.Component;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -13,6 +15,7 @@ public abstract class InfoPanel extends JPanel{
 
 	
 	public InfoPanel(String name){
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		upperPanel = new JPanel();
 		bottomPanel = new JPanel();
 		
@@ -34,7 +37,12 @@ public abstract class InfoPanel extends JPanel{
 		this.add(bottomPanel);
 	}
 	
-    
+    public void upperPanelAdd(Component part){
+    	upperPanel.add(part);
+    }
+    public void bottomPanelAdd(Component part){
+    	bottomPanel.add(part);
+    }
 
 	
 	

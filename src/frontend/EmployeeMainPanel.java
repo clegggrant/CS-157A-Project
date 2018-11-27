@@ -1,6 +1,7 @@
 package frontend;
 
 import java.awt.CardLayout;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
@@ -16,6 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.plaf.ViewportUI;
+
+import backend.EmployeeFunctions;
 
 // The employee Menu
 
@@ -58,6 +61,8 @@ public class EmployeeMainPanel{
 				
 				//call whatever frame or perform whatever action
 				System.out.println("Viewing Employees with Accounts");
+				boolean result = EmployeeFunctions.get_employees_with_accounts();
+
 				CardLayout c1 = (CardLayout)cards.getLayout();
 				c1.show(cards,VIEWEMPACC);
 			}
@@ -140,7 +145,8 @@ public class EmployeeMainPanel{
 	private void loadPanelsToCards(){
 		this.cards = new JPanel(new CardLayout());
 		this.cards.add(employeePanel, EMPPANEL);
-		this.cards.add(new TableInfoPanel("View Employees"), VIEWEMPACC);
+		String[] view_emp_col = {"Employee Id", "Checking Id", "Saving Id", "Credit Id"};
+		this.cards.add(new TableInfoPanel("View Employees", view_emp_col), VIEWEMPACC);
 	}
 	
 	public JPanel getCards(){return this.cards;}
