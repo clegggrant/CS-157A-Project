@@ -1,108 +1,84 @@
 package frontend;
-import javax.imageio.ImageIO;
+
 import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
+import java.awt.event.*;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-/**
- * Represents the interface the user will use when running
- * the application
- * @author clegg
- *
- */
-
-public class Menu extends JFrame{
+public class Menu {
 	
-	public final Font font = new Font("Arial", Font.PLAIN, 20);
+	private JFrame jf = new JFrame("Bank Management System");
 	
-	public Menu(){
-		JFrame jf = initializeJF();
+	public Menu() {
+		initialize(jf);
 		addButtons(jf);
 		jf.setVisible(true);
 	}
 	
-	/**
-	 * Creates an empty JFrame with a GridLayout for the Buttons
-	 * @return output The JFrame menu to be displayed
-	 */
-	private JFrame initializeJF(){
-		JFrame output = new JFrame("Bank Management System");
-		output.setSize(300,130);
-	
-		output.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		return output;
+	private void initialize(JFrame jf) {
+		jf.setLayout(new BorderLayout());
+		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = (int)(screenSize.getHeight()/4);
+		int width = (int)(screenSize.getWidth()/4);
+		jf.setSize(width, height);
+		
+		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jf.setLocationRelativeTo(null);
 	}
 	
-	//TODO: Add action listeners to buttons 
-	//      that call backend functions
-	/**
-	 * Adds buttons for the backend functions to the JFrame
-	 * @param jf The JFrame to add the buttons to
-	 */
-	private void addButtons(JFrame jf){
-		
-		//create panel to hold all buttons in flow layout
+	private void addButtons(JFrame jf) {
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout());
-		
+		buttonPanel.setLayout(new GridLayout(3,1,20,20));
+		buttonPanel.setBorder(new EmptyBorder(20,20,20,20));
 		
 		//create empManag button
-		JButton employeeManagement = new JButton("Employee Management");
-		buttonPanel.add(employeeManagement);
-		//create action listener for the empManag button
-		employeeManagement.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// dispose of the current frame
-				jf.dispose();
+				JButton employeeManagement = new JButton("Employee Management");
+				employeeManagement.setAlignmentX(Component.CENTER_ALIGNMENT);
+				employeeManagement.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						JPanel employeePanel = new EmployeePanel();
+						jf.add(employeePanel, BorderLayout.CENTER);
+						buttonPanel.setVisible(false);
+						//jf.remove(buttonPanel);
+						Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+						int height = (int)(screenSize.getHeight()/3);
+						int width = (int)(screenSize.getWidth()/3);
+						jf.setSize(width, height);
+						jf.validate();
+						jf.repaint();
+					}
+				});
+				
+				
+				JButton transactionInfo = new JButton("Transaction Information");
+				transactionInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
+				transactionInfo.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						JOptionPane.showMessageDialog(jf, "Feature not yet implemented!", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				});
 
-				//call the employee management frame
-				JFrame empManagement = new EmployeeFrame();
-			}
-		});
-		
-		
-		JButton transactionInfo = new JButton("Transaction Information");
-		buttonPanel.add(transactionInfo);
-		transactionInfo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// dispose of the current frame
-				jf.dispose();
-
-				//call the employee management frame
-				JFrame transacInfo = new TransactionFrame();
-			}
-		});
-		
-
-		JButton accountInfo = new JButton("Account Information");
-		buttonPanel.add(accountInfo);
-		accountInfo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// dispose of the current frame
-				jf.dispose();
-
-				//call the employee management frame
-				JFrame accountInfo = new AccountFrame();
-			}
-		});
-		
-		
-		for(int i = 0; i < jf.getContentPane().getComponentCount(); i++){
-			
-			if(jf.getContentPane().getComponents()[i] instanceof JButton){
-				jf.getContentPane().getComponents()[i].setFont(font);
-			}
-		}
-		
-		jf.add(buttonPanel);
+				
+				JButton accountInfo = new JButton("Account Information");
+				accountInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
+				accountInfo.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						JOptionPane.showMessageDialog(jf, "Feature not yet implemented!", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				});
+				
+				buttonPanel.add(employeeManagement);
+				buttonPanel.add(transactionInfo);
+				buttonPanel.add(accountInfo);
+				
+				for(int i = 0; i < buttonPanel.getComponentCount(); i++){
+					
+					if(buttonPanel.getComponents()[i] instanceof JButton){
+						buttonPanel.getComponents()[i].setFont(new Font("Arial", Font.PLAIN, 30));
+					}
+				}
+				
+				jf.add(buttonPanel, BorderLayout.CENTER);
 	}
 }
