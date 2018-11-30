@@ -1,8 +1,11 @@
 /*==============================================================*/
 /* DBMS name:      ORACLE Version 11g                           */
-/* Created on:     11/28/2018 9:20:18 PM                        */
+/* Created on:     11/29/2018 7:44:15 PM                        */
 /*==============================================================*/
 
+
+alter table ACCOUNT
+   drop constraint FK_ACCOUNT_EMPLOYEE__EMPLOYEE;
 
 alter table ACCOUNT
    drop constraint FK_ACCOUNT_HAS_ACCOU_CUSTOMER;
@@ -13,9 +16,6 @@ alter table CHECKING
 alter table CREDIT_CARD
    drop constraint FK_CREDIT_C_IS_CREDIT_ACCOUNT;
 
-alter table EMPLOYEE 
-   drop constraint FK_EMPLOYEE_CAN_BE_CUSTOMER;
-
 alter table LOAN
    drop constraint FK_LOAN_IS_LOAN_ACCOUNT;
 
@@ -25,6 +25,8 @@ alter table SAVINGS
 alter table TRANSACTION_HISTORY
    drop constraint FK_TRANSACT_TRANSACTI_ACCOUNT;
 
+drop index EMPLOYEE_ACCOUNT_FK;
+
 drop index HAS_ACCOUNT_FK;
 
 drop table ACCOUNT cascade constraints;
@@ -33,11 +35,7 @@ drop table CHECKING cascade constraints;
 
 drop table CREDIT_CARD cascade constraints;
 
-drop index CAN_BE_FK;
-
 drop table CUSTOMER cascade constraints;
-
-drop index CAN_BE2_FK;
 
 drop table EMPLOYEE cascade constraints;
 
@@ -55,6 +53,7 @@ drop table TRANSACTION_HISTORY cascade constraints;
 create table ACCOUNT 
 (
    ACCT_ID              CHAR(10)             not null,
+   EMPLOYEE_ID          CHAR(10),
    SSN                  CHAR(11)             not null,
    BALANCE              NUMBER(10,2)         not null,
    OPEN_DATE            DATE                 not null,
@@ -69,11 +68,19 @@ create index HAS_ACCOUNT_FK on ACCOUNT (
 );
 
 /*==============================================================*/
+/* Index: EMPLOYEE_ACCOUNT_FK                                   */
+/*==============================================================*/
+create index EMPLOYEE_ACCOUNT_FK on ACCOUNT (
+   EMPLOYEE_ID ASC
+);
+
+/*==============================================================*/
 /* Table: CHECKING                                              */
 /*==============================================================*/
 create table CHECKING 
 (
    ACCT_ID              CHAR(10)             not null,
+   EMPLOYEE_ID          CHAR(10),
    SSN                  CHAR(11),
    BALANCE              NUMBER(10,2)         not null,
    OPEN_DATE            DATE                 not null,
@@ -89,6 +96,7 @@ create table CHECKING
 create table CREDIT_CARD 
 (
    ACCT_ID              CHAR(10)             not null,
+   EMPLOYEE_ID          CHAR(10),
    SSN                  CHAR(11),
    BALANCE              NUMBER(10,2)         not null,
    OPEN_DATE            DATE                 not null,
@@ -111,10 +119,8 @@ create table CUSTOMER
    FIRST_NAME           VARCHAR2(15)         not null,
    LAST_NAME            VARCHAR2(15)         not null,
    ADDR                 VARCHAR2(30)         not null,
-   JOIN_DATE            DATE                 not null,
    constraint PK_CUSTOMER primary key (SSN)
 );
-
 
 /*==============================================================*/
 /* Table: EMPLOYEE                                              */
@@ -122,18 +128,13 @@ create table CUSTOMER
 create table EMPLOYEE 
 (
    EMPLOYEE_ID          CHAR(10)             not null,
-   SSN                  CHAR(11)             unique,
    POSITION             VARCHAR2(20)         not null,
    SALARY               NUMBER(10,2)         not null,
    HIRE_DATE            DATE                 not null,
+   FIRST_NAME           VARCHAR2(15),
+   LAST_NAME            VARCHAR2(15),
+   SOCIAL_SECURITY      CHAR(11),
    constraint PK_EMPLOYEE primary key (EMPLOYEE_ID)
-);
-
-/*==============================================================*/
-/* Index: CAN_BE_FK                                            */
-/*==============================================================*/
-create index CAN_BE_FK on EMPLOYEE (
-   SSN ASC
 );
 
 /*==============================================================*/
@@ -142,6 +143,7 @@ create index CAN_BE_FK on EMPLOYEE (
 create table LOAN 
 (
    ACCT_ID              CHAR(10)             not null,
+   EMPLOYEE_ID          CHAR(10),
    SSN                  CHAR(11),
    BALANCE              NUMBER(10,2)         not null,
    OPEN_DATE            DATE                 not null,
@@ -160,6 +162,7 @@ create table LOAN
 create table SAVINGS 
 (
    ACCT_ID              CHAR(10)             not null,
+   EMPLOYEE_ID          CHAR(10),
    SSN                  CHAR(11),
    BALANCE              NUMBER(10,2)         not null,
    OPEN_DATE            DATE                 not null,
@@ -180,7 +183,6 @@ create table TRANSACTION_HISTORY
    TRANSACTION_DATE     DATE                 not null,
    TRANSACTON_AMOUNT    NUMBER(10,2)         not null,
    "TO"                 CHAR(10)             not null,
-   "FROM"               CHAR(10)             not null,
    constraint PK_TRANSACTION_HISTORY primary key (TRANSACTION_ID)
 );
 
@@ -190,6 +192,10 @@ create table TRANSACTION_HISTORY
 create index TRANSACTION_FK on TRANSACTION_HISTORY (
    ACCT_ID ASC
 );
+
+alter table ACCOUNT
+   add constraint FK_ACCOUNT_EMPLOYEE__EMPLOYEE foreign key (EMPLOYEE_ID)
+      references EMPLOYEE (EMPLOYEE_ID);
 
 alter table ACCOUNT
    add constraint FK_ACCOUNT_HAS_ACCOU_CUSTOMER foreign key (SSN)
@@ -202,10 +208,6 @@ alter table CHECKING
 alter table CREDIT_CARD
    add constraint FK_CREDIT_C_IS_CREDIT_ACCOUNT foreign key (ACCT_ID)
       references ACCOUNT (ACCT_ID);
-
-alter table EMPLOYEE
-   add constraint FK_EMPLOYEE_CAN_BE_CUSTOMER foreign key (SSN)
-      references CUSTOMER (SSN) on delete set null;
 
 alter table LOAN
    add constraint FK_LOAN_IS_LOAN_ACCOUNT foreign key (ACCT_ID)
