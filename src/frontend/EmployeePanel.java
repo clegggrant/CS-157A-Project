@@ -20,12 +20,49 @@ public class EmployeePanel extends JPanel {
 		setBorder(new EmptyBorder(10,10,10,10));
 		
 		JButton empsWAccts = new JButton("View Employees With Accounts");
+		empsWAccts.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//call whatever frame or perform whatever action
+				System.out.println("Viewing Employees with Accounts and calling function");
+				boolean result = EmployeeFunctions.empsWAccts();
+				System.out.println("The result from view employees w accts returneds: " + result);
+			}
+		});
+		
 		
 		JButton empsWAbvAvgSal = new JButton("View Employees With Above Avg Salary");
+		empsWAbvAvgSal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//call whatever frame or perform whatever action
+				System.out.println("Viewing Employees with Above Avg Salart and calling function");
+				boolean result = EmployeeFunctions.empsWAboveAvgSal();
+				System.out.println("The result from view employees w above avg sal returneds: " + result);
+			}
+		});
 		
 		JButton empsWBelowAvgSal = new JButton("View Employees With Below Avg Salary");
+		empsWBelowAvgSal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//call whatever frame or perform whatever action
+				System.out.println("Viewing Employees with Below Avg Salart and calling function");
+				boolean result = EmployeeFunctions.empsWBelowAvgSal();
+				System.out.println("The result from view employees w below avg sal returneds: " + result);
+			}
+		});
 		
 		JButton calcSalExp = new JButton("Calculate Salary Expense");
+		calcSalExp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//call whatever frame or perform whatever action
+				System.out.println("Calculating Salary Expense by calling function");
+				boolean result = EmployeeFunctions.calcSalExpense();
+				System.out.println("The result from calc sal expense returneds: " + result);
+			}
+		});
 		
 		JButton hire = new JButton("Hire Employee");
 		hire.addActionListener((x) -> {
