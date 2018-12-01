@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.CallableStatement;
+
 import oracle.jdbc.OracleTypes;
 
 public class EmployeeFunctions {
@@ -78,8 +79,13 @@ public class EmployeeFunctions {
 			if(nInsertedRecords>0){ // check that the data is inserted successfully or not
 				status = true;
 				
-				//Call front end function to notify that new hire has been added
-				System.out.println("New hire has been successfully inserted");
+				Data data = new Data();
+				data.firstName = firstname;
+				data.lastName = lastname;
+				
+				
+				//Call front end function to notify that new hire has been added passing data obj
+				System.out.println(data.firstName + " " + data.lastName + " has been successfully inserted");
 			}
 	
 			con.close();
@@ -135,8 +141,11 @@ public class EmployeeFunctions {
 			if(nUpdatedRecords>0){ // check that the data is deleted successfully or not
 				status = true;
 				
-				//call front end to notify employee has been deleted
-				System.out.println("Employee " +  empid + " has been successfully removed");
+				Data data = new Data();
+				data.employeeID = Integer.parseInt(empid);
+				
+				//call front end to notify employee has been deleted passing data obj
+				System.out.println("Employee " +  data.employeeID + " has been successfully removed");
 				
 			}
 			else{
@@ -182,11 +191,15 @@ public class EmployeeFunctions {
 			cStmt.execute();
 		
 			status = true;
-			int yearly = cStmt.getInt(1);
-			int monthly = cStmt.getInt(2);
+			double yearly = cStmt.getDouble(1);
+			double monthly = cStmt.getDouble(2);
+			
+			Data data = new Data();
+			data.yearly = yearly;
+			data.monthly = monthly;
 				
-			//call frontend and send this information as parameter
-			System.out.println("YEARLY: " + yearly + " MONTHLY: " + monthly);
+			//call frontend and send data obje
+			System.out.println("YEARLY: " + data.yearly + " MONTHLY: " + data.monthly);
 				
 			con.close();
 		} catch (Exception e) {
@@ -229,10 +242,20 @@ public class EmployeeFunctions {
 				System.out.println("Returned Results, Getting data");
 			
 				int empID = rs.getInt("emp_id");
-				int sal = rs.getInt("sal");
+				double sal = rs.getDouble("sal");
+				String first_name = rs.getString("f_name");
+				String last_name = rs.getString("l_name");
 				
-				//call front end, passing the data of empID and salary
-				System.out.println("You've received data: " + empID + " " + sal);
+				Data data = new Data();
+				data.firstName = first_name;
+				data.lastName = last_name;
+				data.employeeID = empID;
+				data.salary = sal;
+				
+				
+				
+				//call front end, passing the data obj
+				System.out.println("You've received data: " + data.firstName);
 				
 			}//end rs.next while statement
 	
@@ -277,10 +300,19 @@ public class EmployeeFunctions {
 				System.out.println("Returned Results, Getting data");
 			
 				int empID = rs.getInt("emp_id");
-				int sal = rs.getInt("sal");
+				double sal = rs.getDouble("sal");
+				String first_name = rs.getString("f_name");
+				String last_name = rs.getString("l_name");
 				
-				//call front end, passing the data of empID and sal
-				System.out.println("You've received data: " + empID + " " + sal);
+				Data data = new Data();
+				data.firstName = first_name;
+				data.lastName = last_name;
+				data.employeeID = empID;
+				data.salary = sal;
+				
+				
+				//call front end, passing the data object
+				System.out.println("You've received data: " + data.firstName);
 				
 			}//end rs.next while statement
 	
@@ -320,14 +352,24 @@ public class EmployeeFunctions {
 			//rs.next() shows that the resultset contains nect value or not
 			// for retrieving multiple results, you can use while(rs.next)
 			
+		
+			
 			while(rs.next()) { //checking while the resultset has any value? 
 				status = true;
 				System.out.println("Returned Results, Getting data");
 			
 				int empID = rs.getInt("emp_id");
+				String first_name = rs.getString("f_name");
+				String last_name = rs.getString("l_name");
+
+				Data data = new Data();
+				data.firstName = first_name;
+				data.lastName = last_name;
+				data.employeeID = empID;
+					
 				
-				//call front end, passing the data of empID
-				System.out.println("You've received data: " + empID);
+				//call front end, passing the data obj
+				System.out.println("You've received data: " + data.firstName);
 				
 			}//end rs.next while statement
 	

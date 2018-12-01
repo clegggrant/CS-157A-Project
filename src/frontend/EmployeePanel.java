@@ -7,6 +7,8 @@ import backend.EmployeeFunctions;
 
 import java.awt.*;
 import java.awt.event.*;
+import backend.Data;
+
 
 public class EmployeePanel extends JPanel {
 	
@@ -26,7 +28,6 @@ public class EmployeePanel extends JPanel {
 				//call whatever frame or perform whatever action
 				System.out.println("Viewing Employees with Accounts and calling function");
 				boolean result = EmployeeFunctions.empsWAccts();
-				System.out.println("The result from view employees w accts returneds: " + result);
 			}
 		});
 		
@@ -36,9 +37,8 @@ public class EmployeePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				//call whatever frame or perform whatever action
-				System.out.println("Viewing Employees with Above Avg Salart and calling function");
+				System.out.println("Viewing Employees with Above Avg Salary and calling function");
 				boolean result = EmployeeFunctions.empsWAboveAvgSal();
-				System.out.println("The result from view employees w above avg sal returneds: " + result);
 			}
 		});
 		
@@ -47,9 +47,8 @@ public class EmployeePanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				//call whatever frame or perform whatever action
-				System.out.println("Viewing Employees with Below Avg Salart and calling function");
+				System.out.println("Viewing Employees with Below Avg Salary and calling function");
 				boolean result = EmployeeFunctions.empsWBelowAvgSal();
-				System.out.println("The result from view employees w below avg sal returneds: " + result);
 			}
 		});
 		
@@ -60,7 +59,8 @@ public class EmployeePanel extends JPanel {
 				//call whatever frame or perform whatever action
 				System.out.println("Calculating Salary Expense by calling function");
 				boolean result = EmployeeFunctions.calcSalExpense();
-				System.out.println("The result from calc sal expense returneds: " + result);
+				
+				
 			}
 		});
 		
