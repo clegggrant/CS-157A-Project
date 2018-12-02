@@ -161,8 +161,9 @@ public class EmployeeFunctions {
 		return status;
 	}
 	
-	public static boolean calcSalExpense() {
+	public static Data calcSalExpense() {
 		boolean status = false;
+		Data data = new Data();
 		try {
 			//defining database driver to use
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -194,7 +195,6 @@ public class EmployeeFunctions {
 			double yearly = cStmt.getDouble(1);
 			double monthly = cStmt.getDouble(2);
 			
-			Data data = new Data();
 			data.yearly.add(yearly);
 			data.monthly.add(monthly);
 				
@@ -206,11 +206,12 @@ public class EmployeeFunctions {
 			System.out.println(e);
 		} 
 	
-		return status;
+		return data;
 	}
 	
-	public static boolean empsWBelowAvgSal() {
+	public static Data empsWBelowAvgSal() {
 		boolean status = false;
+		Data data = new Data();
 		try {
 			//defining database driver to use
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -246,7 +247,6 @@ public class EmployeeFunctions {
 				String first_name = rs.getString("f_name");
 				String last_name = rs.getString("l_name");
 				
-				Data data = new Data();
 				data.firstName.add(first_name);
 				data.lastName.add(last_name);
 				data.employeeID.add(empID);
@@ -264,11 +264,12 @@ public class EmployeeFunctions {
 			System.out.println(e);
 		} 
 	
-		return status;
+		return data;
 	}
 	
-	public static boolean empsWAboveAvgSal() {
+	public static Data empsWAboveAvgSal() {
 		boolean status = false;
+		Data data = new Data();
 		try {
 			//defining database driver to use
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -304,7 +305,6 @@ public class EmployeeFunctions {
 				String first_name = rs.getString("f_name");
 				String last_name = rs.getString("l_name");
 				
-				Data data = new Data();
 				data.firstName.add(first_name);
 				data.lastName.add(last_name);
 				data.employeeID.add(empID);
@@ -321,11 +321,12 @@ public class EmployeeFunctions {
 			System.out.println(e);
 		} 
 	
-		return status;
+		return data;
 	}
 	
-	public static boolean empsWAccts() {
+	public static Data empsWAccts() {
 		boolean status = false;
+		Data data = new Data();
 		try {
 			//defining database driver to use
 			Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -362,7 +363,6 @@ public class EmployeeFunctions {
 				String first_name = rs.getString("f_name");
 				String last_name = rs.getString("l_name");
 
-				Data data = new Data();
 				data.firstName.add(first_name);
 				data.lastName.add(last_name);
 				data.employeeID.add(empID);
@@ -378,6 +378,6 @@ public class EmployeeFunctions {
 			System.out.println(e);
 		} 
 	
-		return status;
+		return data;
 	}
 }
