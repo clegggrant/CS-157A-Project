@@ -80,12 +80,12 @@ public class EmployeeFunctions {
 				status = true;
 				
 				Data data = new Data();
-				data.firstName = firstname;
-				data.lastName = lastname;
+				data.firstName.add(firstname);
+				data.lastName.add(lastname);
 				
 				
 				//Call front end function to notify that new hire has been added passing data obj
-				System.out.println(data.firstName + " " + data.lastName + " has been successfully inserted");
+				System.out.println(data.firstName.get(0) + " " + data.lastName.get(0) + " has been successfully inserted");
 			}
 	
 			con.close();
@@ -142,10 +142,10 @@ public class EmployeeFunctions {
 				status = true;
 				
 				Data data = new Data();
-				data.employeeID = Integer.parseInt(empid);
+				data.employeeID.add(Integer.parseInt(empid));
 				
 				//call front end to notify employee has been deleted passing data obj
-				System.out.println("Employee " +  data.employeeID + " has been successfully removed");
+				System.out.println("Employee " +  data.employeeID.get(0) + " has been successfully removed");
 				
 			}
 			else{
@@ -195,11 +195,11 @@ public class EmployeeFunctions {
 			double monthly = cStmt.getDouble(2);
 			
 			Data data = new Data();
-			data.yearly = yearly;
-			data.monthly = monthly;
+			data.yearly.add(yearly);
+			data.monthly.add(monthly);
 				
 			//call frontend and send data obje
-			System.out.println("YEARLY: " + data.yearly + " MONTHLY: " + data.monthly);
+			System.out.println("YEARLY: " + data.yearly.get(0) + " MONTHLY: " + data.monthly.get(0));
 				
 			con.close();
 		} catch (Exception e) {
@@ -236,7 +236,7 @@ public class EmployeeFunctions {
 			
 			//rs.next() shows that the resultset contains nect value or not
 			// for retrieving multiple results, you can use while(rs.next)
-			
+			int i = 0;
 			while(rs.next()) { //checking while the resultset has any value? 
 				status = true;
 				System.out.println("Returned Results, Getting data");
@@ -247,15 +247,15 @@ public class EmployeeFunctions {
 				String last_name = rs.getString("l_name");
 				
 				Data data = new Data();
-				data.firstName = first_name;
-				data.lastName = last_name;
-				data.employeeID = empID;
-				data.salary = sal;
+				data.firstName.add(first_name);
+				data.lastName.add(last_name);
+				data.employeeID.add(empID);
+				data.salary.add(sal);
 				
 				
 				
 				//call front end, passing the data obj
-				System.out.println("You've received data: " + data.firstName);
+				System.out.println("You've received data: " + data.employeeID.get(i) + ", " + data.firstName.get(i) + " " + data.lastName.get(i) + ", " + data.salary.get(i++));
 				
 			}//end rs.next while statement
 	
@@ -294,7 +294,7 @@ public class EmployeeFunctions {
 			
 			//rs.next() shows that the resultset contains nect value or not
 			// for retrieving multiple results, you can use while(rs.next)
-			
+			int i = 0;
 			while(rs.next()) { //checking while the resultset has any value? 
 				status = true;
 				System.out.println("Returned Results, Getting data");
@@ -305,14 +305,14 @@ public class EmployeeFunctions {
 				String last_name = rs.getString("l_name");
 				
 				Data data = new Data();
-				data.firstName = first_name;
-				data.lastName = last_name;
-				data.employeeID = empID;
-				data.salary = sal;
+				data.firstName.add(first_name);
+				data.lastName.add(last_name);
+				data.employeeID.add(empID);
+				data.salary.add(sal);
 				
 				
 				//call front end, passing the data object
-				System.out.println("You've received data: " + data.firstName);
+				System.out.println("You've received data: " + data.employeeID.get(i) + ", " + data.firstName.get(i) + " " + data.lastName.get(i) + ", " + data.salary.get(i++));
 				
 			}//end rs.next while statement
 	
@@ -353,7 +353,7 @@ public class EmployeeFunctions {
 			// for retrieving multiple results, you can use while(rs.next)
 			
 		
-			
+			int i = 0;
 			while(rs.next()) { //checking while the resultset has any value? 
 				status = true;
 				System.out.println("Returned Results, Getting data");
@@ -363,13 +363,13 @@ public class EmployeeFunctions {
 				String last_name = rs.getString("l_name");
 
 				Data data = new Data();
-				data.firstName = first_name;
-				data.lastName = last_name;
-				data.employeeID = empID;
+				data.firstName.add(first_name);
+				data.lastName.add(last_name);
+				data.employeeID.add(empID);
 					
 				
 				//call front end, passing the data obj
-				System.out.println("You've received data: " + data.firstName);
+				System.out.println("You've received data: " + data.employeeID.get(i) + ", " + data.firstName.get(i) + " " + data.lastName.get(i));
 				
 			}//end rs.next while statement
 	
