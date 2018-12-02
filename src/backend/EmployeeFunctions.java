@@ -164,7 +164,7 @@ public class EmployeeFunctions {
 		return status;
 	}
 	
-	public static Data calcSalExpense() {
+	public static Data calcSalExpense(JFrame jf) {
 		boolean status = false;
 		Data data = new Data();
 		try {
@@ -202,8 +202,9 @@ public class EmployeeFunctions {
 			data.monthly.add(monthly);
 				
 			//call frontend and send data obje
-			System.out.println("YEARLY: " + data.yearly.get(0) + " MONTHLY: " + data.monthly.get(0));
-				
+			String notice = ("YEARLY: " + data.yearly.get(0) + " MONTHLY: " + data.monthly.get(0));
+			JOptionPane.showMessageDialog(jf, notice);	
+			
 			con.close();
 		} catch (Exception e) {
 			System.out.println(e);
@@ -212,7 +213,7 @@ public class EmployeeFunctions {
 		return data;
 	}
 	
-	public static Data empsWBelowAvgSal() {
+	public static Data empsWBelowAvgSal(JFrame jf) {
 		boolean status = false;
 		Data data = new Data();
 		try {
@@ -265,12 +266,50 @@ public class EmployeeFunctions {
 			con.close();
 		} catch (Exception e) {
 			System.out.println(e);
-		} 
+		}
+		
+		JFrame outFrame = new JFrame("Output");
+		outFrame.setLocationRelativeTo(jf);
+		outFrame.setLayout(new BorderLayout());
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = (int)(screenSize.getHeight()/3);
+		int width = (int)(screenSize.getWidth()/3);
+		outFrame.setSize(width/2, height/2);
+		
+		JPanel outPanel = new JPanel();
+		outPanel.setLayout(new GridLayout(2,1,20,20));
+		outPanel.setBorder(new EmptyBorder(20,20,20,20));
+		
+		String output = "         ID             First              Last                        Salary\n";
+		for(int i = 0; i < data.employeeID.size(); i++) {
+			output += data.employeeID.get(i) + "  " + data.firstName.get(i) + "  " + data.lastName.get(i) + data.salary.get(i) + "\n";
+		}
+		
+		JTextArea jta = new JTextArea(output);
+		jta.setSize(width/4,height/4);
+		jta.setEditable(false);
+		jta.setLineWrap(true);
+		
+		JScrollPane jsp = new JScrollPane(jta);
+		
+		JButton close = new JButton("Close");
+		close.addActionListener((x)->{
+			outFrame.dispose();
+		});
+		close.setSize(25,25);
+		close.setFont(new Font("Arial", Font.PLAIN, 30));
+		
+		outPanel.add(jsp);
+		outPanel.add(close);
+		outFrame.add(outPanel);
+		outFrame.setVisible(true);
+		
+		
 	
 		return data;
 	}
 	
-	public static Data empsWAboveAvgSal() {
+	public static Data empsWAboveAvgSal(JFrame jf) {
 		boolean status = false;
 		Data data = new Data();
 		try {
@@ -323,11 +362,47 @@ public class EmployeeFunctions {
 		} catch (Exception e) {
 			System.out.println(e);
 		} 
+		
+		JFrame outFrame = new JFrame("Output");
+		outFrame.setLocationRelativeTo(jf);
+		outFrame.setLayout(new BorderLayout());
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = (int)(screenSize.getHeight()/3);
+		int width = (int)(screenSize.getWidth()/3);
+		outFrame.setSize(width/2, height/2);
+		
+		JPanel outPanel = new JPanel();
+		outPanel.setLayout(new GridLayout(2,1,20,20));
+		outPanel.setBorder(new EmptyBorder(20,20,20,20));
+		
+		String output = "         ID             First              Last                        Salary\n";
+		for(int i = 0; i < data.employeeID.size(); i++) {
+			output += data.employeeID.get(i) + "  " + data.firstName.get(i) + "  " + data.lastName.get(i) + data.salary.get(i) + "\n";
+		}
+		
+		JTextArea jta = new JTextArea(output);
+		jta.setSize(width/4,height/4);
+		jta.setEditable(false);
+		jta.setLineWrap(true);
+		
+		JScrollPane jsp = new JScrollPane(jta);
+		
+		JButton close = new JButton("Close");
+		close.addActionListener((x)->{
+			outFrame.dispose();
+		});
+		close.setSize(25,25);
+		close.setFont(new Font("Arial", Font.PLAIN, 30));
+		
+		outPanel.add(jsp);
+		outPanel.add(close);
+		outFrame.add(outPanel);
+		outFrame.setVisible(true);
 	
 		return data;
 	}
 	
-	public static Data empsWAccts() {
+	public static Data empsWAccts(JFrame jf) {
 		boolean status = false;
 		Data data = new Data();
 		try {
@@ -380,6 +455,42 @@ public class EmployeeFunctions {
 		} catch (Exception e) {
 			System.out.println(e);
 		} 
+		
+		JFrame outFrame = new JFrame("Output");
+		outFrame.setLocationRelativeTo(jf);
+		outFrame.setLayout(new BorderLayout());
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int height = (int)(screenSize.getHeight()/3);
+		int width = (int)(screenSize.getWidth()/3);
+		outFrame.setSize(width/2, height/2);
+		
+		JPanel outPanel = new JPanel();
+		outPanel.setLayout(new GridLayout(2,1,20,20));
+		outPanel.setBorder(new EmptyBorder(20,20,20,20));
+		
+		String output = "         ID             First              Last             \n";
+		for(int i = 0; i < data.employeeID.size(); i++) {
+			output += data.employeeID.get(i) + "  " + data.firstName.get(i) + "  " + data.lastName.get(i)+ "\n";
+		}
+		
+		JTextArea jta = new JTextArea(output);
+		jta.setSize(width/4,height/4);
+		jta.setEditable(false);
+		jta.setLineWrap(true);
+		
+		JScrollPane jsp = new JScrollPane(jta);
+		
+		JButton close = new JButton("Close");
+		close.addActionListener((x)->{
+			outFrame.dispose();
+		});
+		close.setSize(25,25);
+		close.setFont(new Font("Arial", Font.PLAIN, 30));
+		
+		outPanel.add(jsp);
+		outPanel.add(close);
+		outFrame.add(outPanel);
+		outFrame.setVisible(true);
 	
 		return data;
 	}
