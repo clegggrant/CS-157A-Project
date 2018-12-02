@@ -268,7 +268,7 @@ public class EmployeeFunctions {
 			System.out.println(e);
 		}
 		
-		JFrame outFrame = new JFrame("Output");
+		JFrame outFrame = new JFrame("Employees with Below Average Salary");
 		outFrame.setLocationRelativeTo(jf);
 		outFrame.setLayout(new BorderLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -363,7 +363,7 @@ public class EmployeeFunctions {
 			System.out.println(e);
 		} 
 		
-		JFrame outFrame = new JFrame("Output");
+		JFrame outFrame = new JFrame("Employees with Above Average Salary");
 		outFrame.setLocationRelativeTo(jf);
 		outFrame.setLayout(new BorderLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -456,7 +456,7 @@ public class EmployeeFunctions {
 			System.out.println(e);
 		} 
 		
-		JFrame outFrame = new JFrame("Output");
+		JFrame outFrame = new JFrame("Employees with Accounts");
 		outFrame.setLocationRelativeTo(jf);
 		outFrame.setLayout(new BorderLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
