@@ -61,7 +61,7 @@ public class EmployeePanel extends JPanel {
 				"Confirm SSN: ", conssn,
 				"Employee Salary: ", salary,
 				"Employee Job: ", job,
-				"Start Date: ", startDate
+				"Start Date (DD-MON-YYYY): ", startDate
 			};
 			
 			int option = JOptionPane.showConfirmDialog(null, message, "Hire Employee", JOptionPane.OK_CANCEL_OPTION);

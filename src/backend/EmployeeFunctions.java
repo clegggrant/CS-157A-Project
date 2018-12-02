@@ -59,7 +59,6 @@ public class EmployeeFunctions {
 			//prepared statement is used for secure access
 			// ? used for data to put in query
 			// actual query to execute is
-			// select * from users where username = name and password = pass
 			PreparedStatement oPrStmt = con
 					.prepareStatement("INSERT INTO EMPLOYEE "
 							+ "(position, salary, hire_date, first_name, last_name, social_security)"
@@ -131,7 +130,6 @@ public class EmployeeFunctions {
 			//prepared statement is used for secure access
 			// ? used for data to put in query
 			// actual query to execute is
-			// select * from users where username = name and password = pass
 			PreparedStatement oPrStmt = con
 					.prepareStatement("DELETE FROM EMPLOYEE WHERE employee_id=?");					
 			
@@ -153,7 +151,8 @@ public class EmployeeFunctions {
 			}
 			else{
 				//call front end to notify unable to delete 
-				System.out.println("Unsuccessful Deletion, wrong ID?");
+				String notice = ("Unable to find employee. Please try again.");
+				JOptionPane.showMessageDialog(jf, notice);
 			}
 	
 			con.close();
@@ -184,7 +183,6 @@ public class EmployeeFunctions {
 			//prepared statement is used for secure access
 			// ? used for data to put in query
 			// actual query to execute is
-			// select * from users where username = name and password = pass
 			CallableStatement cStmt = con
 					.prepareCall("{CALL calc_salary_exp(?,?)}");				
 		
@@ -202,7 +200,7 @@ public class EmployeeFunctions {
 			data.monthly.add(monthly);
 				
 			//call frontend and send data obje
-			String notice = ("YEARLY: " + data.yearly.get(0) + " MONTHLY: " + data.monthly.get(0));
+			String notice = ("Calculated Yearly Expense: $" + String.format( "%,.2f", data.yearly.get(0)) + "\nCalculated Monthly Expense: $" + String.format( "%,.2f", data.monthly.get(0)));
 			JOptionPane.showMessageDialog(jf, notice);	
 			
 			con.close();
@@ -233,7 +231,6 @@ public class EmployeeFunctions {
 			//prepared statement is used for secure access
 			// ? used for data to put in query
 			// actual query to execute is
-			// select * from users where username = name and password = pass
 			PreparedStatement oPrStmt = con
 					.prepareStatement("Select * FROM emps_with_below_avg_sal");					
 		
@@ -272,21 +269,22 @@ public class EmployeeFunctions {
 		outFrame.setLocationRelativeTo(jf);
 		outFrame.setLayout(new BorderLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int)(screenSize.getHeight()/3);
-		int width = (int)(screenSize.getWidth()/3);
-		outFrame.setSize(width/2, height/2);
+		int height = (int)(screenSize.getHeight()/4);
+		int width = (int)(screenSize.getWidth()/4);
+		outFrame.setSize(width, height);
 		
 		JPanel outPanel = new JPanel();
 		outPanel.setLayout(new GridLayout(2,1,20,20));
 		outPanel.setBorder(new EmptyBorder(20,20,20,20));
 		
-		String output = "         ID             First              Last                        Salary\n";
+		
+		String output = "ID\tFirst\tLast\tSalary\n";
 		for(int i = 0; i < data.employeeID.size(); i++) {
-			output += data.employeeID.get(i) + "  " + data.firstName.get(i) + "  " + data.lastName.get(i) + data.salary.get(i) + "\n";
+			output += data.employeeID.get(i) + "\t" + data.firstName.get(i) + "\t" + data.lastName.get(i) + "\t$" + String.format("%,.2f", data.salary.get(i)) + "\n";
 		}
 		
 		JTextArea jta = new JTextArea(output);
-		jta.setSize(width/4,height/4);
+
 		jta.setEditable(false);
 		jta.setLineWrap(true);
 		
@@ -329,7 +327,6 @@ public class EmployeeFunctions {
 			//prepared statement is used for secure access
 			// ? used for data to put in query
 			// actual query to execute is
-			// select * from users where username = name and password = pass
 			PreparedStatement oPrStmt = con
 					.prepareStatement("Select * FROM emps_with_above_avg_sal");					
 		
@@ -367,21 +364,20 @@ public class EmployeeFunctions {
 		outFrame.setLocationRelativeTo(jf);
 		outFrame.setLayout(new BorderLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int)(screenSize.getHeight()/3);
-		int width = (int)(screenSize.getWidth()/3);
-		outFrame.setSize(width/2, height/2);
+		int height = (int)(screenSize.getHeight()/4);
+		int width = (int)(screenSize.getWidth()/4);
+		outFrame.setSize(width, height);
 		
 		JPanel outPanel = new JPanel();
 		outPanel.setLayout(new GridLayout(2,1,20,20));
 		outPanel.setBorder(new EmptyBorder(20,20,20,20));
 		
-		String output = "         ID             First              Last                        Salary\n";
+		String output = "ID\tFirst\tLast\tSalary\n";
 		for(int i = 0; i < data.employeeID.size(); i++) {
-			output += data.employeeID.get(i) + "  " + data.firstName.get(i) + "  " + data.lastName.get(i) + data.salary.get(i) + "\n";
+			output += data.employeeID.get(i) + "\t" + data.firstName.get(i) + "\t" + data.lastName.get(i) + "\t$" + String.format("%,.2f", data.salary.get(i)) + "\n";
 		}
 		
 		JTextArea jta = new JTextArea(output);
-		jta.setSize(width/4,height/4);
 		jta.setEditable(false);
 		jta.setLineWrap(true);
 		
@@ -422,16 +418,13 @@ public class EmployeeFunctions {
 			//prepared statement is used for secure access
 			// ? used for data to put in query
 			// actual query to execute is
-			// select * from users where username = name and password = pass
 			PreparedStatement oPrStmt = con
-					.prepareStatement("Select * From emps_with_accts");					
+					.prepareStatement("SELECT * FROM emps_with_accts");					
 		
 			ResultSet rs = oPrStmt.executeQuery(); // executing the query and getting the resultset from databse
-			
+
 			//rs.next() shows that the resultset contains nect value or not
 			// for retrieving multiple results, you can use while(rs.next)
-			
-		
 			int i = 0;
 			while(rs.next()) { //checking while the resultset has any value? 
 				status = true;
@@ -460,21 +453,20 @@ public class EmployeeFunctions {
 		outFrame.setLocationRelativeTo(jf);
 		outFrame.setLayout(new BorderLayout());
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int)(screenSize.getHeight()/3);
-		int width = (int)(screenSize.getWidth()/3);
-		outFrame.setSize(width/2, height/2);
+		int height = (int)(screenSize.getHeight()/4);
+		int width = (int)(screenSize.getWidth()/4);
+		outFrame.setSize(width, height);
 		
 		JPanel outPanel = new JPanel();
 		outPanel.setLayout(new GridLayout(2,1,20,20));
 		outPanel.setBorder(new EmptyBorder(20,20,20,20));
 		
-		String output = "         ID             First              Last             \n";
+		String output = "ID\tFirst\tLast\n";
 		for(int i = 0; i < data.employeeID.size(); i++) {
-			output += data.employeeID.get(i) + "  " + data.firstName.get(i) + "  " + data.lastName.get(i)+ "\n";
+			output += data.employeeID.get(i) + "\t" + data.firstName.get(i) + "\t" + data.lastName.get(i)+ "\n";
 		}
 		
 		JTextArea jta = new JTextArea(output);
-		jta.setSize(width/4,height/4);
 		jta.setEditable(false);
 		jta.setLineWrap(true);
 		
