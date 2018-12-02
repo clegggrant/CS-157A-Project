@@ -76,6 +76,7 @@ public class EmployeeFunctions {
 			
 			int nInsertedRecords = oPrStmt.executeUpdate(); // executing the query and getting the updated/inserted row counts from databse
 			
+			
 			if(nInsertedRecords>0){ // check that the data is inserted successfully or not
 				status = true;
 				
@@ -85,7 +86,9 @@ public class EmployeeFunctions {
 				
 				
 				//Call front end function to notify that new hire has been added passing data obj
-				System.out.println(data.firstName.get(0) + " " + data.lastName.get(0) + " has been successfully inserted");
+				String notice = data.firstName.get(0) + " " + data.lastName.get(0) + " has been successfully hired";
+				JOptionPane.showMessageDialog(jf, notice);
+				
 			}
 	
 			con.close();
@@ -145,8 +148,8 @@ public class EmployeeFunctions {
 				data.employeeID.add(Integer.parseInt(empid));
 				
 				//call front end to notify employee has been deleted passing data obj
-				System.out.println("Employee " +  data.employeeID.get(0) + " has been successfully removed");
-				
+				String notice = ("Employee " +  data.employeeID.get(0) + " has been successfully removed");
+				JOptionPane.showMessageDialog(jf, notice);
 			}
 			else{
 				//call front end to notify unable to delete 
