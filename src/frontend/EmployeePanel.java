@@ -7,8 +7,6 @@ import backend.EmployeeFunctions;
 
 import java.awt.*;
 import java.awt.event.*;
-import backend.Data;
-
 
 public class EmployeePanel extends JPanel {
 	
@@ -18,50 +16,31 @@ public class EmployeePanel extends JPanel {
 	}
 	
 	private void initialize() {
-		setLayout(new GridLayout(7,1,10,10));
+		setLayout(new GridLayout(7,1,20,20));
 		setBorder(new EmptyBorder(10,10,10,10));
 		
 		JButton empsWAccts = new JButton("View Employees With Accounts");
-		empsWAccts.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				//call whatever frame or perform whatever action
-				System.out.println("Viewing Employees with Accounts and calling function");
-				boolean result = EmployeeFunctions.empsWAccts();
-			}
+		empsWAccts.addActionListener((x) -> {
+			JFrame jf = (JFrame) SwingUtilities.getWindowAncestor(this);
+			EmployeeFunctions.empsWAccts(jf);
 		});
 		
-		
 		JButton empsWAbvAvgSal = new JButton("View Employees With Above Avg Salary");
-		empsWAbvAvgSal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				//call whatever frame or perform whatever action
-				System.out.println("Viewing Employees with Above Avg Salary and calling function");
-				boolean result = EmployeeFunctions.empsWAboveAvgSal();
-			}
+		empsWAbvAvgSal.addActionListener(x->{
+			JFrame jf = (JFrame) SwingUtilities.getWindowAncestor(this);
+			EmployeeFunctions.empsWAboveAvgSal(jf);
 		});
 		
 		JButton empsWBelowAvgSal = new JButton("View Employees With Below Avg Salary");
-		empsWBelowAvgSal.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				//call whatever frame or perform whatever action
-				System.out.println("Viewing Employees with Below Avg Salary and calling function");
-				boolean result = EmployeeFunctions.empsWBelowAvgSal();
-			}
+		empsWBelowAvgSal.addActionListener(x->{
+			JFrame jf = (JFrame) SwingUtilities.getWindowAncestor(this);
+			EmployeeFunctions.empsWBelowAvgSal(jf);
 		});
 		
 		JButton calcSalExp = new JButton("Calculate Salary Expense");
-		calcSalExp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				//call whatever frame or perform whatever action
-				System.out.println("Calculating Salary Expense by calling function");
-				boolean result = EmployeeFunctions.calcSalExpense();
-				
-				
-			}
+		calcSalExp.addActionListener(x->{
+			JFrame jf = (JFrame) SwingUtilities.getWindowAncestor(this);
+			EmployeeFunctions.calcSalExpense(jf);
 		});
 		
 		JButton hire = new JButton("Hire Employee");
