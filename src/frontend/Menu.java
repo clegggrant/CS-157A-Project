@@ -6,10 +6,8 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Menu {
-	public static final Dimension WINDIMENSION = Toolkit.getDefaultToolkit().getScreenSize();
-	public static final String MENU = "MENU";
-	public static final String EMPANEL = "EMPLOYEE PANEL";
 	
+	// The main frame
 	private JFrame jf = new JFrame("Bank Management System");
 	private JPanel cardPanel = new JPanel(new CardLayout());; // for switching panels.
 	
@@ -18,18 +16,18 @@ public class Menu {
 		
 		initialize();
 		
-		cardPanel.add(getMenuPanel(), MENU);		
-		cardPanel.add(new EmployeePanel(), EMPANEL);
-		jf.add(cardPanel, BorderLayout.CENTER);
+		cardPanel.add(getMenuPanel(), StaticVar.MENU);		
+		cardPanel.add(new EmployeePanel(jf), StaticVar.EMPANEL);
 		
+		jf.add(cardPanel, BorderLayout.CENTER);
 		jf.setVisible(true);
 	}
 	
 	private void initialize() {
 		jf.setLayout(new BorderLayout());
 
-		int height = (int)(WINDIMENSION.getHeight()/4);
-		int width = (int)(WINDIMENSION.getWidth()/4);
+		int height = (int)(StaticVar.WINDIMENSION.getHeight()/4);
+		int width = (int)(StaticVar.WINDIMENSION.getWidth()/4);
 		jf.setSize(width, height);
 		
 		jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,13 +46,13 @@ public class Menu {
 			employeeManagement.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					
-					int height = (int)(WINDIMENSION.getHeight()/3);
-					int width = (int)(WINDIMENSION.getWidth()/3);
+					int height = (int)(StaticVar.WINDIMENSION.getHeight()/3);
+					int width = (int)(StaticVar.WINDIMENSION.getWidth()/3);
 					jf.setSize(width, height);
 					jf.setLocationRelativeTo(null);
 
 					CardLayout c = (CardLayout)cardPanel.getLayout();
-					c.show(cardPanel, EMPANEL);
+					c.show(cardPanel, StaticVar.EMPANEL);
 										
 				}
 			});
@@ -84,7 +82,7 @@ public class Menu {
 			for(int i = 0; i < menuPanel.getComponentCount(); i++){
 				
 				if(menuPanel.getComponents()[i] instanceof JButton){
-					menuPanel.getComponents()[i].setFont(new Font("Arial", Font.PLAIN, 30));
+					menuPanel.getComponents()[i].setFont(StaticVar.MENUFONT);
 				}
 			}
 			
