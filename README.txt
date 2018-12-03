@@ -1,1 +1,1 @@
-testing
+Running sample script order: employee, customer, credit, checking, saving, loan, transaction
