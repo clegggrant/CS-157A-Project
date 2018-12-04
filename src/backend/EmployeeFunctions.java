@@ -33,10 +33,8 @@ public class EmployeeFunctions {
 		
 		Data data = new Data();
 		try {
-			//defining database driver to use
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			//getting connection from the mysql database
 			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 			
 			if(con != null) {
@@ -46,9 +44,6 @@ public class EmployeeFunctions {
 				 System.out.println("Connection Failed! Check output console");
 			}
 
-			//prepared statement is used for secure access
-			// ? used for data to put in query
-			// actual query to execute is
 			CallableStatement cStmt = con
 					.prepareCall("{CALL emp_net_sal(?,?,?)}");				
 		
@@ -103,28 +98,15 @@ public class EmployeeFunctions {
 		}
 		boolean status = false;
 		try {
-			//defining database driver to use
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
 			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
-			
-			if(con != null) {
-				System.out.println("Connection established!");
-			}
-			else {
-				 System.out.println("Connection Failed! Check output console");
-			}
-
-			//prepared statement is used for secure access
-			// ? used for data to put in query
-			// actual query to execute is
 
 			CallableStatement cStmt = con
 					.prepareCall("{CALL hire(?,?,?,?,?,?)}");			
 			
-			//setting ? variables in the above statement
-			// parameter index start from 1
+		
 			cStmt.setString(1, job);
 			cStmt.setString(2, salary);
 			cStmt.setString(3, startdate);
@@ -132,7 +114,7 @@ public class EmployeeFunctions {
 			cStmt.setString(5, lastname);
 			cStmt.setString(6, ssn);
 			
-			cStmt.execute(); // executing the query and getting the updated/inserted row counts from databse
+			cStmt.execute(); 
 			
 			
 			status = true;
@@ -142,7 +124,6 @@ public class EmployeeFunctions {
 			data.lastName.add(lastname);
 			
 			
-			//Call front end function to notify that new hire has been added passing data obj
 			String notice = data.firstName.get(0) + " " + data.lastName.get(0) + " has been successfully hired";
 			JOptionPane.showMessageDialog(jf, notice);
 			
@@ -171,10 +152,8 @@ public class EmployeeFunctions {
 		
 		boolean status = false;
 		try {
-			//defining database driver to use
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			//getting connection from the mysql database
 			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 			
 			if(con != null) {
@@ -184,30 +163,25 @@ public class EmployeeFunctions {
 				 System.out.println("Connection Failed! Check output console");
 			}
 
-			//prepared statement is used for secure access
-			// ? used for data to put in query
-			// actual query to execute is
+	
 			PreparedStatement oPrStmt = con
 					.prepareStatement("DELETE FROM EMPLOYEE WHERE employee_id=?");					
 			
-			//setting ? variables in the above statement
-			// parameter index start from 1
+		
 			oPrStmt.setInt(1, Integer.parseInt(empid));
 
-			int nUpdatedRecords = oPrStmt.executeUpdate(); // executing the query and getting the updated/inserted row counts from databse
+			int nUpdatedRecords = oPrStmt.executeUpdate(); 
 			
-			if(nUpdatedRecords>0){ // check that the data is deleted successfully or not
+			if(nUpdatedRecords>0){ 
 				status = true;
 				
 				Data data = new Data();
 				data.employeeID.add(Integer.parseInt(empid));
 				
-				//call front end to notify employee has been deleted passing data obj
 				String notice = ("Employee " +  data.employeeID.get(0) + " has been successfully removed");
 				JOptionPane.showMessageDialog(jf, notice);
 			}
 			else{
-				//call front end to notify unable to delete 
 				String notice = ("Unable to find employee. Please try again.");
 				JOptionPane.showMessageDialog(jf, notice);
 			}
@@ -221,25 +195,12 @@ public class EmployeeFunctions {
 	}
 	
 	public static Data calcSalExpense(JFrame jf) {
-		boolean status = false;
 		Data data = new Data();
 		try {
-			//defining database driver to use
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
-			//getting connection from the mysql database
 			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
-			
-			if(con != null) {
-				System.out.println("Connection established!");
-			}
-			else {
-				 System.out.println("Connection Failed! Check output console");
-			}
-
-			//prepared statement is used for secure access
-			// ? used for data to put in query
-			// actual query to execute is
+		
 			CallableStatement cStmt = con
 					.prepareCall("{CALL calc_salary_exp(?,?)}");				
 		
@@ -249,12 +210,9 @@ public class EmployeeFunctions {
 			
 			cStmt.execute();
 		
-			status = true;
 			double yearly = cStmt.getDouble(1);
 			double monthly = cStmt.getDouble(2);
 			
-			//data.yearly.add(yearly);
-			//data.monthly.add(monthly);
 			data.yearly = yearly;
 			data.monthly = monthly;
 				
@@ -267,36 +225,23 @@ public class EmployeeFunctions {
 		return data;
 	}
 	
+	
+	//--------------------------------------
+	
 	public static Data empsWBelowAvgSal(JFrame jf, String[] requestAttrOrder) {
-		//boolean status = false;
 		Data data = new Data();
 		if(requestAttrOrder.length == 4){
 			try {
-				//defining database driver to use
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
-				//getting connection from the mysql database
 				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 				
-				if(con != null) {
-					System.out.println("Connection established!");
-				}
-				else {
-					 System.out.println("Connection Failed! Check output console");
-				}
-	
-				//prepared statement is used for secure access
-				// ? used for data to put in query
-				// actual query to execute is
 				PreparedStatement oPrStmt = con
 						.prepareStatement("Select * FROM emps_with_below_avg_sal");					
 			
-				ResultSet rs = oPrStmt.executeQuery(); // executing the query and getting the resultset from databse
+				ResultSet rs = oPrStmt.executeQuery(); 
 				
-				//rs.next() shows that the resultset contains nect value or not
-				// for retrieving multiple results, you can use while(rs.next)
-				int i = 0;
-				while(rs.next()) { //checking while the resultset has any value? 
+				while(rs.next()) { 
 					System.out.println("Returned Results, Getting data");
 					
 
@@ -308,7 +253,7 @@ public class EmployeeFunctions {
 					data.dataValues.add(storedArr);
 					
 					
-				}//end rs.next while statement
+				}
 		
 				con.close();
 			} catch (Exception e) {
@@ -321,36 +266,20 @@ public class EmployeeFunctions {
 	}
 	
 	public static Data empsWAboveAvgSal(JFrame jf, String[] requestAttrOrder) {
-	//	boolean status = false;
 		Data data = new Data();
 		if(requestAttrOrder.length == 4){
 
 			try {
-				//defining database driver to use
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
-				//getting connection from the mysql database
 				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
-				
-				if(con != null) {
-					System.out.println("Connection established!");
-				}
-				else {
-					 System.out.println("Connection Failed! Check output console");
-				}
-	
-				//prepared statement is used for secure access
-				// ? used for data to put in query
-				// actual query to execute is
+			
 				PreparedStatement oPrStmt = con
 						.prepareStatement("Select * FROM emps_with_above_avg_sal");					
 			
-				ResultSet rs = oPrStmt.executeQuery(); // executing the query and getting the resultset from databse
+				ResultSet rs = oPrStmt.executeQuery(); 
 				
-				//rs.next() shows that the resultset contains nect value or not
-				// for retrieving multiple results, you can use while(rs.next)
-				//int i = 0;
-				while(rs.next()) { //checking while the resultset has any value? 
+				while(rs.next()) { 
 					
 					String[] storedArr = new String[requestAttrOrder.length];
 					storedArr[0] = getStringValue(rs, requestAttrOrder[0]);
@@ -358,7 +287,6 @@ public class EmployeeFunctions {
 					storedArr[2] = getStringValue(rs, requestAttrOrder[2]);
 					storedArr[3] = getStringValue(rs, requestAttrOrder[3]);
 					data.dataValues.add(storedArr);
-					
 					
 				}
 		
@@ -374,33 +302,20 @@ public class EmployeeFunctions {
 	
 	public static Data empsWAccts(JFrame jf, String[] requestAttrOrder) {
 		Data data = new Data();
+		Connection con = null;
 		if(requestAttrOrder.length == 3){
 			try {
-				//defining database driver to use
+				
 				Class.forName("oracle.jdbc.driver.OracleDriver");
+				con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 				
-				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
-				
-				if(con != null) {
-					System.out.println("Connection established!");
-				}
-				else {
-					 System.out.println("Connection Failed! Check output console");
-				}
 
-				//prepared statement is used for secure access
-				// ? used for data to put in query
-				// actual query to execute is
 				PreparedStatement oPrStmt = con
 						.prepareStatement("SELECT * FROM emps_with_accts");					
 			
-				ResultSet rs = oPrStmt.executeQuery(); // executing the query and getting the resultset from databse
+				ResultSet rs = oPrStmt.executeQuery(); 
 
-				//rs.next() shows that the resultset contains nect value or not
-				// for retrieving multiple results, you can use while(rs.next)
-				//int i = 0;
-				while(rs.next()) { //checking while the resultset has any value? 
+				while(rs.next()) { 
 					System.out.println("Returned Results, Getting data");
 				
 					String[] storedArr = new String[requestAttrOrder.length];
@@ -411,12 +326,19 @@ public class EmployeeFunctions {
 					
 				}
 		
-				con.close();
+			
 			} catch (Exception e) {
 				System.out.println(e);
-			} 
+				
+			} finally{
+				try {
+					if(con != null)
+						con.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-
 		return data;
 	}
 	

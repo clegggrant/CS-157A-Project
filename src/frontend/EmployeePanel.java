@@ -1,13 +1,14 @@
 package frontend;
 
 import javax.swing.*;
+
 import javax.swing.border.*;
 
 import backend.EmployeeFunctions;
+import common_util.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -299,7 +300,7 @@ public class EmployeePanel extends JPanel {
 			year.setSelectedItem(Integer.toString(selectedYear));
 			year.addActionListener(e -> {
 				JComboBox cb = (JComboBox)e.getSource();
-				day = StaticVar.getDayComboBox(Integer.parseInt((String) cb.getSelectedItem()), 
+				day = StaticFunc.getDayComboBox(Integer.parseInt((String) cb.getSelectedItem()), 
 						 month.getSelectedIndex() + 1);
 				updateDayList();
 
@@ -312,14 +313,14 @@ public class EmployeePanel extends JPanel {
 			month.setSelectedIndex(monthDate - 1);;
 			month.addActionListener(e -> {
 				JComboBox cb = (JComboBox)e.getSource();
-				day = StaticVar.getDayComboBox(Integer.parseInt((String) year.getSelectedItem()), 
+				day = StaticFunc.getDayComboBox(Integer.parseInt((String) year.getSelectedItem()), 
 						cb.getSelectedIndex() + 1);
 				updateDayList();
 
 			});
 			
 			// For Day drop list
-			day = StaticVar.getDayComboBox(selectedYear, monthDate);
+			day = StaticFunc.getDayComboBox(selectedYear, monthDate);
 			day.setSelectedItem(Integer.toString(StaticVar.TODAY.getDayOfMonth())); 
 			
 			datePanel.removeAll();

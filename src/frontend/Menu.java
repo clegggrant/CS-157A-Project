@@ -2,6 +2,8 @@ package frontend;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import common_util.StaticVar;
+
 import java.awt.*;
 import java.awt.event.*;
 

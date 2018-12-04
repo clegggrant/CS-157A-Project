@@ -1,4 +1,4 @@
-package frontend;
+package common_util;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -50,19 +50,7 @@ public class StaticVar {
 											"JUL","AUG","SEP",
 											"OCT","NOV","DEC"};
 	
-	// UTIL/HELPER FUNCTIONS
-	public static final JComboBox<String> getDayComboBox(int selectedYear, int monthDate){
-		YearMonth yearMonthObj = YearMonth.of(selectedYear, monthDate);
-		int numOfDays = yearMonthObj.lengthOfMonth();
-		ArrayList daysInMonth = (ArrayList) IntStream.rangeClosed(1, numOfDays)
-										.mapToObj(i -> Integer.toString(i))
-										.collect(Collectors.toList());
-		return new JComboBox<String>((String[]) daysInMonth.toArray(new String[0]));
-		
-	}
-	
-	
-	
+
 }
 
 
