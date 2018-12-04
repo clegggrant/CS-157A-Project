@@ -190,6 +190,7 @@ public class EmployeePanel extends JPanel {
 				BoxLayout bl = new BoxLayout(panel, BoxLayout.Y_AXIS);
 				panel.setLayout(bl);
 				
+				
 				// Create Label
 				JLabel label = new JLabel("Salary Expense", JLabel.CENTER);
 				label.setAlignmentX(Component.CENTER_ALIGNMENT);
