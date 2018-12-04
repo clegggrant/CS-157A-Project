@@ -103,6 +103,7 @@ public class EmployeeFunctions {
 			//getting connection from the mysql database
 			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 
+			con.setAutoCommit(false);
 			CallableStatement cStmt = con
 					.prepareCall("{CALL hire(?,?,?,?,?,?)}");			
 			
@@ -115,7 +116,7 @@ public class EmployeeFunctions {
 			cStmt.setString(6, ssn);
 			
 			cStmt.execute(); 
-			
+			con.commit();
 			
 			status = true;
 			
@@ -163,7 +164,7 @@ public class EmployeeFunctions {
 				 System.out.println("Connection Failed! Check output console");
 			}
 
-	
+			con.setAutoCommit(false);
 			PreparedStatement oPrStmt = con
 					.prepareStatement("DELETE FROM EMPLOYEE WHERE employee_id=?");					
 			
@@ -171,7 +172,7 @@ public class EmployeeFunctions {
 			oPrStmt.setInt(1, Integer.parseInt(empid));
 
 			int nUpdatedRecords = oPrStmt.executeUpdate(); 
-			
+			con.commit();
 			if(nUpdatedRecords>0){ 
 				status = true;
 				
