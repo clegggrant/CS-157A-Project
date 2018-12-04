@@ -31,7 +31,7 @@ public class EmployeePanel extends JPanel {
 	}
 	
 	private void initialize() {
-		setLayout(new GridLayout(7,1,10,10));
+		setLayout(new GridLayout(8,1,10,10));
 		setBorder(new EmptyBorder(10,10,10,10));
 		
 		JButton empsWAccts = new JButton("View Employees With Accounts");
@@ -110,7 +110,7 @@ public class EmployeePanel extends JPanel {
 				panel.setLayout(bl);
 				
 				// Create Label
-				JLabel label = new JLabel("Employess With Above Average Salory", JLabel.CENTER);
+				JLabel label = new JLabel("Employess With Above Average Salary", JLabel.CENTER);
 				label.setAlignmentX(Component.CENTER_ALIGNMENT);
 				label.setFont(StaticVar.MENUFONT);
 				
@@ -158,7 +158,7 @@ public class EmployeePanel extends JPanel {
 				panel.setLayout(bl);
 				
 				// Create Label
-				JLabel label = new JLabel("Employess With Below Average Salory", JLabel.CENTER);
+				JLabel label = new JLabel("Employess With Below Average Salary", JLabel.CENTER);
 				label.setAlignmentX(Component.CENTER_ALIGNMENT);
 				label.setFont(StaticVar.MENUFONT);
 				

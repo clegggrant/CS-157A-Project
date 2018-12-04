@@ -229,6 +229,7 @@ alter table TRANSACTION_HISTORY
 /*==============================================================*/
 /* Milestone 2 changes                                          */
 /*==============================================================*/
+
 CREATE OR REPLACE VIEW remaining_loan_view AS 
 	SELECT acct_id as acct_id, interest_rate as intr_rate, remaining_loan_term as remain_term FROM LOAN;
 
@@ -241,12 +242,12 @@ CREATE OR REPLACE VIEW emps_with_accts AS
 CREATE OR REPLACE VIEW emps_with_above_avg_sal AS 
     SELECT EMPLOYEE_ID as emp_id, SALARY as sal, FIRST_NAME as f_name, LAST_NAME as l_name
     FROM EMPLOYEE WHERE 
-        SALARY > (SELECT AVG(SALARY) FROM EMPLOYEE); 
+        SALARY >= (SELECT AVG(SALARY) FROM EMPLOYEE); 
 
 CREATE OR REPLACE VIEW emps_with_below_avg_sal AS 
     SELECT EMPLOYEE_ID as emp_id, SALARY as sal, FIRST_NAME as f_name, LAST_NAME as l_name
     FROM EMPLOYEE WHERE 
-        SALARY < (SELECT AVG(SALARY) FROM EMPLOYEE); 
+        SALARY <= (SELECT AVG(SALARY) FROM EMPLOYEE); 
 
 DROP SEQUENCE emp_seq; 
 
@@ -259,6 +260,140 @@ CREATE SEQUENCE acct_seq START WITH 1000000000;
 DROP SEQUENCE trans_seq;
 
 CREATE SEQUENCE trans_seq START WITH 1000000000;
+
+CREATE OR REPLACE TRIGGER new_checking
+BEFORE INSERT ON CHECKING
+FOR EACH ROW
+DECLARE
+    v_next number(10);
+    v_today date;
+BEGIN 
+    v_next := acct_seq.NEXTVAL; 
+    v_today := sysdate;
+
+    SELECT v_next
+    INTO :new.ACCT_ID
+    FROM dual;
+    
+    INSERT INTO ACCOUNT(ACCT_ID, EMPLOYEE_ID, SSN, BALANCE, OPEN_DATE) VALUES
+    (v_next, :new.EMPLOYEE_ID, :new.SSN, :new.BALANCE, v_today);
+END;
+/
+
+CREATE OR REPLACE TRIGGER new_credit
+BEFORE INSERT ON CREDIT_CARD
+FOR EACH ROW
+DECLARE
+    v_next number(10);
+    v_today date;
+BEGIN 
+    v_next := acct_seq.NEXTVAL;
+    v_today := sysdate;
+    
+    SELECT v_next
+    INTO :new.ACCT_ID
+    FROM dual;
+    
+    INSERT INTO ACCOUNT(ACCT_ID, EMPLOYEE_ID, SSN, BALANCE, OPEN_DATE) VALUES
+    (v_next, :new.EMPLOYEE_ID, :new.SSN, :new.BALANCE, v_today);
+END;
+/
+
+CREATE OR REPLACE TRIGGER new_hire 
+BEFORE INSERT ON EMPLOYEE 
+FOR EACH ROW 
+BEGIN 
+    SELECT emp_seq.NEXTVAL 
+    INTO :new.EMPLOYEE_ID 
+    FROM dual;
+END; 
+/
+
+CREATE OR REPLACE TRIGGER new_loan 
+BEFORE INSERT ON LOAN
+FOR EACH ROW
+DECLARE
+    v_next number(10);
+    v_today date;
+BEGIN 
+    v_next := acct_seq.NEXTVAL;
+    v_today := sysdate;
+    
+    SELECT v_next
+    INTO :new.ACCT_ID
+    FROM dual;
+    
+    INSERT INTO ACCOUNT(ACCT_ID, EMPLOYEE_ID, SSN, BALANCE, OPEN_DATE) VALUES
+    (v_next, :new.EMPLOYEE_ID, :new.SSN, :new.BALANCE, v_today);
+END;
+/
+
+CREATE OR REPLACE TRIGGER new_savings 
+BEFORE INSERT ON SAVINGS
+FOR EACH ROW
+DECLARE
+    v_next number(10);
+    v_today date;
+BEGIN 
+    v_next := acct_seq.NEXTVAL;
+    v_today := sysdate;
+    
+    SELECT v_next
+    INTO :new.ACCT_ID
+    FROM dual;
+    
+    INSERT INTO ACCOUNT(ACCT_ID, EMPLOYEE_ID, SSN, BALANCE, OPEN_DATE) VALUES
+    (v_next, :new.EMPLOYEE_ID, :new.SSN, :new.BALANCE, v_today);
+END;
+/
+
+CREATE OR REPLACE TRIGGER new_trans
+BEFORE INSERT ON TRANSACTION_HISTORY
+FOR EACH ROW
+BEGIN
+    SELECT trans_seq.NEXTVAL
+    INTO :new.TRANSACTION_ID
+    FROM dual;
+END;
+/
+
+CREATE OR REPLACE PROCEDURE calc_salary_exp(yearly out NUMBER, monthly out NUMBER) AS 
+BEGIN 
+    SELECT SUM(SALARY) INTO yearly FROM EMPLOYEE;
+    monthly := yearly/12; 
+    
+END calc_salary_exp;
+/
+
+CREATE OR REPLACE PROCEDURE hire (position in varchar2, salary in number, hiredate in date, first in varchar2, last in varchar2, social in char) IS
+BEGIN
+    INSERT INTO EMPLOYEE(POSITION, SALARY, HIRE_DATE, FIRST_NAME, LAST_NAME, SOCIAL_SECURITY) VALUES (position, salary, hiredate, first, last, social);
+END hire;
+/
+
+CREATE OR REPLACE PROCEDURE emp_net_sal(emp_id in NUMBER, netyearly out NUMBER, netmonthly out NUMBER) IS
+    v_benefits number(10,2);
+BEGIN
+    netyearly := 0;
+    
+    SELECT SALARY INTO netyearly FROM EMPLOYEE WHERE EMPLOYEE_ID =      emp_id;
+    
+    IF netyearly < 41629.00 THEN
+        v_benefits :=1000.00;
+        netyearly := netyearly - (netyearly * .06) + v_benefits;
+    ELSIF netyearly < 52612.00 THEN
+        v_benefits := 2000.00;
+        netyearly := netyearly - (netyearly * .08) + v_benefits;
+    ELSIF netyearly < 268750.00 THEN
+        v_benefits := 3000.00;
+        netyearly := netyearly - (netyearly * .093) + v_benefits;
+    ELSE
+        v_benefits := 4000.00;
+        netyearly := netyearly - (netyearly * .103) + v_benefits;
+    END IF;
+    netmonthly := netyearly/12;
+END emp_net_sal;
+/
 
 
 

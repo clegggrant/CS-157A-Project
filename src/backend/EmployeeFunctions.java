@@ -50,7 +50,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -62,37 +62,39 @@ public class EmployeeFunctions {
 			//prepared statement is used for secure access
 			// ? used for data to put in query
 			// actual query to execute is
-			PreparedStatement oPrStmt = con
-					.prepareStatement("INSERT INTO EMPLOYEE "
-							+ "(position, salary, hire_date, first_name, last_name, social_security)"
-							+ " VALUES(?,?,TO_DATE(?,'DD-MON-YYYY'),?,?,?)");					
+//			PreparedStatement oPrStmt = con
+//					.prepareStatement("INSERT INTO EMPLOYEE "
+//							+ "(position, salary, hire_date, first_name, last_name, social_security)"
+//							+ " VALUES(?,?,TO_DATE(?,'DD-MON-YYYY'),?,?,?)");					
+			
+			
+			CallableStatement cStmt = con
+					.prepareCall("{CALL hire(?,?,?,?,?,?)}");			
 			
 			//setting ? variables in the above statement
 			// parameter index start from 1
-			oPrStmt.setString(1, job);
-			oPrStmt.setString(2, salary);
-			oPrStmt.setString(3, startdate);
-			oPrStmt.setString(4, firstname);
-			oPrStmt.setString(5, lastname);
-			oPrStmt.setString(6, ssn);
+			cStmt.setString(1, job);
+			cStmt.setString(2, salary);
+			cStmt.setString(3, startdate);
+			cStmt.setString(4, firstname);
+			cStmt.setString(5, lastname);
+			cStmt.setString(6, ssn);
 			
-			int nInsertedRecords = oPrStmt.executeUpdate(); // executing the query and getting the updated/inserted row counts from databse
+			cStmt.execute(); // executing the query and getting the updated/inserted row counts from databse
 			
 			
-			if(nInsertedRecords>0){ // check that the data is inserted successfully or not
-				status = true;
-				
-				Data data = new Data();
-				data.firstName.add(firstname);
-				data.lastName.add(lastname);
-				
-				
-				//Call front end function to notify that new hire has been added passing data obj
-				String notice = data.firstName.get(0) + " " + data.lastName.get(0) + " has been successfully hired";
-				JOptionPane.showMessageDialog(jf, notice);
-				
-			}
-	
+			status = true;
+			
+			Data data = new Data();
+			data.firstName.add(firstname);
+			data.lastName.add(lastname);
+			
+			
+			//Call front end function to notify that new hire has been added passing data obj
+			String notice = data.firstName.get(0) + " " + data.lastName.get(0) + " has been successfully hired";
+			JOptionPane.showMessageDialog(jf, notice);
+			
+
 			con.close();
 		} catch (Exception e) {
 			System.out.println(e);
@@ -121,7 +123,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -174,7 +176,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -222,7 +224,7 @@ public class EmployeeFunctions {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 				
 				if(con != null) {
 					System.out.println("Connection established!");
@@ -276,7 +278,7 @@ public class EmployeeFunctions {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 				
 				if(con != null) {
 					System.out.println("Connection established!");
@@ -326,7 +328,7 @@ public class EmployeeFunctions {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 				
 				if(con != null) {
 					System.out.println("Connection established!");
