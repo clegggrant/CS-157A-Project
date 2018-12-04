@@ -37,7 +37,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -107,7 +107,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -177,7 +177,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -231,7 +231,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -279,7 +279,7 @@ public class EmployeeFunctions {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 				
 				if(con != null) {
 					System.out.println("Connection established!");
@@ -333,7 +333,7 @@ public class EmployeeFunctions {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 				
 				if(con != null) {
 					System.out.println("Connection established!");
@@ -383,7 +383,7 @@ public class EmployeeFunctions {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 				if(con != null) {
 					System.out.println("Connection established!");
 				}
