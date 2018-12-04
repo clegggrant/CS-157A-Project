@@ -18,8 +18,18 @@ import oracle.jdbc.OracleTypes;
 
 public class EmployeeFunctions {
 	
-	public static Data getNetSalary(JFrame jf, String empID) {
-		boolean status = false;
+	public static Data getNetSalary(JFrame jf, String empid, String conempid) {
+		if(!empid.equals(conempid)) {
+			JOptionPane.showMessageDialog(jf, "Employee IDs do not match!", "Error", JOptionPane.ERROR_MESSAGE);
+			
+		}
+		String pattern = "\\d{10}";
+		Pattern p = Pattern.compile(pattern);
+		Matcher m = p.matcher(empid);
+		if(empid.length() != 10 || !m.find()) {
+			JOptionPane.showMessageDialog(jf, "Employee ID should be 10 digit number!", "Error", JOptionPane.ERROR_MESSAGE);
+			
+		}
 		
 		Data data = new Data();
 		try {
@@ -27,7 +37,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -43,30 +53,25 @@ public class EmployeeFunctions {
 					.prepareCall("{CALL emp_net_sal(?,?,?)}");				
 		
 		
-			//empID = "1000000008";
-			cStmt.setString(1, empID);
+			cStmt.setString(1,empid);
 			cStmt.registerOutParameter(2, OracleTypes.NUMBER);
 			cStmt.registerOutParameter(3, OracleTypes.NUMBER);
 			
+			//this returns false
 			cStmt.execute();
-		
-			status = true;
-			
-			double yearly = cStmt.getDouble(2);
-			double monthly = cStmt.getDouble(3);
-			System.out.println("Yearly Sal for Emp " + empID + ": " + yearly);
-			System.out.println("Monthly Sal for Emp " + empID + ": " + monthly);
-
-			
-			//data.yearly.add(yearly);
-			//data.monthly.add(monthly);
-			data.yearly = yearly;
-			data.monthly = monthly;
 				
-			
+			data.yearly = cStmt.getDouble(2);
+			data.monthly = cStmt.getDouble(3);	
+		
 			con.close();
-		} catch (Exception e) {
-			System.out.println(e);
+			
+		} catch (SQLException e) {
+			
+			String notice = ("Unable to find employee. Please try again.");
+			JOptionPane.showMessageDialog(jf, notice);
+		} catch (ClassNotFoundException e) {
+
+			e.printStackTrace();
 		} 
 	
 		return data;
@@ -102,7 +107,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -170,7 +175,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -223,7 +228,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -271,7 +276,7 @@ public class EmployeeFunctions {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 				
 				if(con != null) {
 					System.out.println("Connection established!");
@@ -325,7 +330,7 @@ public class EmployeeFunctions {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 				
 				if(con != null) {
 					System.out.println("Connection established!");
@@ -375,7 +380,7 @@ public class EmployeeFunctions {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 				
 				if(con != null) {
 					System.out.println("Connection established!");
