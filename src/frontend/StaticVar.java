@@ -14,6 +14,8 @@ import java.util.stream.IntStream;
 
 import javax.swing.JComboBox;
 
+import backend.Data;
+
 /*
  * A class that keeps all the static final variable
  * for the front end
@@ -26,6 +28,13 @@ public class StaticVar {
 	
 	// FONT
 	public static final Font MENUFONT = new Font("Arial", Font.PLAIN, 30);
+	
+	
+	// STATIC FINAL STRINGS ATTRIBUTES
+	public static final String FIRST_NAME = "f_name";
+	public static final String LAST_NAME = "l_name";
+	public static final String EMPLOYEEE_ID = "emp_id";
+	public static final String SALARY = "sal";
 	
 	// for the cardPanel
 	public static final String MENU = "MENU";
@@ -51,6 +60,7 @@ public class StaticVar {
 		return new JComboBox<String>((String[]) daysInMonth.toArray(new String[0]));
 		
 	}
+	
 	
 	
 }

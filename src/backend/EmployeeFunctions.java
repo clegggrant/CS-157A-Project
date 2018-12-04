@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.CallableStatement;
 
 import oracle.jdbc.OracleTypes;
@@ -34,7 +35,9 @@ public class EmployeeFunctions {
 			JOptionPane.showMessageDialog(jf, "Use XXX-XX-XXXX format for SSN!", "Error", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-		String pattern2 = "^([0-2][0-9]||3[0-1])-(JAN||FEB||MAR||APR||MAY||JUN||JUL||AUG||SEP||OCT||NOV||DEC)-([0-9][0-9])?[0-9][0-9]$";
+		
+		String pattern2 = "^([1-9]||[1-2][0-9]||3[0-1])-(JAN||FEB||MAR||APR||MAY||JUN||JUL||AUG||SEP||OCT||NOV||DEC)-([0-9][0-9])?[0-9][0-9]$";
+
 		Pattern p2 = Pattern.compile(pattern2);
 		Matcher m2 = p2.matcher(startdate);
 		if(!m2.find()) {
@@ -196,12 +199,11 @@ public class EmployeeFunctions {
 			double yearly = cStmt.getDouble(1);
 			double monthly = cStmt.getDouble(2);
 			
-			data.yearly.add(yearly);
-			data.monthly.add(monthly);
+			//data.yearly.add(yearly);
+			//data.monthly.add(monthly);
+			data.yearly = yearly;
+			data.monthly = monthly;
 				
-			//call frontend and send data obje
-			String notice = ("Calculated Yearly Expense: $" + String.format( "%,.2f", data.yearly.get(0)) + "\nCalculated Monthly Expense: $" + String.format( "%,.2f", data.monthly.get(0)));
-			JOptionPane.showMessageDialog(jf, notice);	
 			
 			con.close();
 		} catch (Exception e) {
@@ -211,279 +213,178 @@ public class EmployeeFunctions {
 		return data;
 	}
 	
-	public static Data empsWBelowAvgSal(JFrame jf) {
-		boolean status = false;
+	public static Data empsWBelowAvgSal(JFrame jf, String[] requestAttrOrder) {
+		//boolean status = false;
 		Data data = new Data();
-		try {
-			//defining database driver to use
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
-			
-			if(con != null) {
-				System.out.println("Connection established!");
-			}
-			else {
-				 System.out.println("Connection Failed! Check output console");
-			}
-
-			//prepared statement is used for secure access
-			// ? used for data to put in query
-			// actual query to execute is
-			PreparedStatement oPrStmt = con
-					.prepareStatement("Select * FROM emps_with_below_avg_sal");					
-		
-			ResultSet rs = oPrStmt.executeQuery(); // executing the query and getting the resultset from databse
-			
-			//rs.next() shows that the resultset contains nect value or not
-			// for retrieving multiple results, you can use while(rs.next)
-			int i = 0;
-			while(rs.next()) { //checking while the resultset has any value? 
-				status = true;
-				System.out.println("Returned Results, Getting data");
-			
-				int empID = rs.getInt("emp_id");
-				double sal = rs.getDouble("sal");
-				String first_name = rs.getString("f_name");
-				String last_name = rs.getString("l_name");
+		if(requestAttrOrder.length == 4){
+			try {
+				//defining database driver to use
+				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
-				data.firstName.add(first_name);
-				data.lastName.add(last_name);
-				data.employeeID.add(empID);
-				data.salary.add(sal);
+				//getting connection from the mysql database
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 				
-				
-				
-				//call front end, passing the data obj
-				System.out.println("You've received data: " + data.employeeID.get(i) + ", " + data.firstName.get(i) + " " + data.lastName.get(i) + ", " + data.salary.get(i++));
-				
-			}//end rs.next while statement
+				if(con != null) {
+					System.out.println("Connection established!");
+				}
+				else {
+					 System.out.println("Connection Failed! Check output console");
+				}
 	
-			con.close();
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		
-		JFrame outFrame = new JFrame("Employees with Below Average Salary");
-		outFrame.setLocationRelativeTo(jf);
-		outFrame.setLayout(new BorderLayout());
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int)(screenSize.getHeight()/4);
-		int width = (int)(screenSize.getWidth()/4);
-		outFrame.setSize(width, height);
-		
-		JPanel outPanel = new JPanel();
-		outPanel.setLayout(new GridLayout(2,1,20,20));
-		outPanel.setBorder(new EmptyBorder(20,20,20,20));
-		
-		
-		String output = "ID\tFirst\tLast\tSalary\n";
-		for(int i = 0; i < data.employeeID.size(); i++) {
-			output += data.employeeID.get(i) + "\t" + data.firstName.get(i) + "\t" + data.lastName.get(i) + "\t$" + String.format("%,.2f", data.salary.get(i)) + "\n";
-		}
-		
-		JTextArea jta = new JTextArea(output);
-
-		jta.setEditable(false);
-		jta.setLineWrap(true);
-		
-		JScrollPane jsp = new JScrollPane(jta);
-		
-		JButton close = new JButton("Close");
-		close.addActionListener((x)->{
-			outFrame.dispose();
-		});
-		close.setSize(25,25);
-		close.setFont(new Font("Arial", Font.PLAIN, 30));
-		
-		outPanel.add(jsp);
-		outPanel.add(close);
-		outFrame.add(outPanel);
-		outFrame.setVisible(true);
-		
-		
-	
-		return data;
-	}
-	
-	public static Data empsWAboveAvgSal(JFrame jf) {
-		boolean status = false;
-		Data data = new Data();
-		try {
-			//defining database driver to use
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+				//prepared statement is used for secure access
+				// ? used for data to put in query
+				// actual query to execute is
+				PreparedStatement oPrStmt = con
+						.prepareStatement("Select * FROM emps_with_below_avg_sal");					
 			
-			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
-			
-			if(con != null) {
-				System.out.println("Connection established!");
-			}
-			else {
-				 System.out.println("Connection Failed! Check output console");
-			}
-
-			//prepared statement is used for secure access
-			// ? used for data to put in query
-			// actual query to execute is
-			PreparedStatement oPrStmt = con
-					.prepareStatement("Select * FROM emps_with_above_avg_sal");					
-		
-			ResultSet rs = oPrStmt.executeQuery(); // executing the query and getting the resultset from databse
-			
-			//rs.next() shows that the resultset contains nect value or not
-			// for retrieving multiple results, you can use while(rs.next)
-			int i = 0;
-			while(rs.next()) { //checking while the resultset has any value? 
-				status = true;
-				System.out.println("Returned Results, Getting data");
-			
-				int empID = rs.getInt("emp_id");
-				double sal = rs.getDouble("sal");
-				String first_name = rs.getString("f_name");
-				String last_name = rs.getString("l_name");
+				ResultSet rs = oPrStmt.executeQuery(); // executing the query and getting the resultset from databse
 				
-				data.firstName.add(first_name);
-				data.lastName.add(last_name);
-				data.employeeID.add(empID);
-				data.salary.add(sal);
-				
-				
-				//call front end, passing the data object
-				System.out.println("You've received data: " + data.employeeID.get(i) + ", " + data.firstName.get(i) + " " + data.lastName.get(i) + ", " + data.salary.get(i++));
-				
-			}//end rs.next while statement
-	
-			con.close();
-		} catch (Exception e) {
-			System.out.println(e);
-		} 
-		
-		JFrame outFrame = new JFrame("Employees with Above Average Salary");
-		outFrame.setLocationRelativeTo(jf);
-		outFrame.setLayout(new BorderLayout());
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int)(screenSize.getHeight()/4);
-		int width = (int)(screenSize.getWidth()/4);
-		outFrame.setSize(width, height);
-		
-		JPanel outPanel = new JPanel();
-		outPanel.setLayout(new GridLayout(2,1,20,20));
-		outPanel.setBorder(new EmptyBorder(20,20,20,20));
-		
-		String output = "ID\tFirst\tLast\tSalary\n";
-		for(int i = 0; i < data.employeeID.size(); i++) {
-			output += data.employeeID.get(i) + "\t" + data.firstName.get(i) + "\t" + data.lastName.get(i) + "\t$" + String.format("%,.2f", data.salary.get(i)) + "\n";
-		}
-		
-		JTextArea jta = new JTextArea(output);
-		jta.setEditable(false);
-		jta.setLineWrap(true);
-		
-		JScrollPane jsp = new JScrollPane(jta);
-		
-		JButton close = new JButton("Close");
-		close.addActionListener((x)->{
-			outFrame.dispose();
-		});
-		close.setSize(25,25);
-		close.setFont(new Font("Arial", Font.PLAIN, 30));
-		
-		outPanel.add(jsp);
-		outPanel.add(close);
-		outFrame.add(outPanel);
-		outFrame.setVisible(true);
-	
-		return data;
-	}
-	
-	public static Data empsWAccts(JFrame jf) {
-		boolean status = false;
-		Data data = new Data();
-		try {
-			//defining database driver to use
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			
-			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
-			
-			if(con != null) {
-				System.out.println("Connection established!");
-			}
-			else {
-				 System.out.println("Connection Failed! Check output console");
-			}
-
-			//prepared statement is used for secure access
-			// ? used for data to put in query
-			// actual query to execute is
-			PreparedStatement oPrStmt = con
-					.prepareStatement("SELECT * FROM emps_with_accts");					
-		
-			ResultSet rs = oPrStmt.executeQuery(); // executing the query and getting the resultset from databse
-
-			//rs.next() shows that the resultset contains nect value or not
-			// for retrieving multiple results, you can use while(rs.next)
-			int i = 0;
-			while(rs.next()) { //checking while the resultset has any value? 
-				status = true;
-				System.out.println("Returned Results, Getting data");
-			
-				int empID = rs.getInt("emp_id");
-				String first_name = rs.getString("f_name");
-				String last_name = rs.getString("l_name");
-
-				data.firstName.add(first_name);
-				data.lastName.add(last_name);
-				data.employeeID.add(empID);
+				//rs.next() shows that the resultset contains nect value or not
+				// for retrieving multiple results, you can use while(rs.next)
+				int i = 0;
+				while(rs.next()) { //checking while the resultset has any value? 
+					System.out.println("Returned Results, Getting data");
 					
-				
-				//call front end, passing the data obj
-				System.out.println("You've received data: " + data.employeeID.get(i) + ", " + data.firstName.get(i) + " " + data.lastName.get(i));
-				
-			}//end rs.next while statement
-	
-			con.close();
-		} catch (Exception e) {
-			System.out.println(e);
-		} 
+
+					String[] storedArr = new String[requestAttrOrder.length];
+					storedArr[0] = getStringValue(rs, requestAttrOrder[0]);
+					storedArr[1] = getStringValue(rs, requestAttrOrder[1]);
+					storedArr[2] = getStringValue(rs, requestAttrOrder[2]);
+					storedArr[3] = getStringValue(rs, requestAttrOrder[3]);
+					data.dataValues.add(storedArr);
+					
+					
+				}//end rs.next while statement
 		
-		JFrame outFrame = new JFrame("Employees with Accounts");
-		outFrame.setLocationRelativeTo(jf);
-		outFrame.setLayout(new BorderLayout());
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int)(screenSize.getHeight()/4);
-		int width = (int)(screenSize.getWidth()/4);
-		outFrame.setSize(width, height);
+				con.close();
+			} catch (Exception e) {
+				System.out.println(e);
+			}
 		
-		JPanel outPanel = new JPanel();
-		outPanel.setLayout(new GridLayout(2,1,20,20));
-		outPanel.setBorder(new EmptyBorder(20,20,20,20));
-		
-		String output = "ID\tFirst\tLast\n";
-		for(int i = 0; i < data.employeeID.size(); i++) {
-			output += data.employeeID.get(i) + "\t" + data.firstName.get(i) + "\t" + data.lastName.get(i)+ "\n";
 		}
-		
-		JTextArea jta = new JTextArea(output);
-		jta.setEditable(false);
-		jta.setLineWrap(true);
-		
-		JScrollPane jsp = new JScrollPane(jta);
-		
-		JButton close = new JButton("Close");
-		close.addActionListener((x)->{
-			outFrame.dispose();
-		});
-		close.setSize(25,25);
-		close.setFont(new Font("Arial", Font.PLAIN, 30));
-		
-		outPanel.add(jsp);
-		outPanel.add(close);
-		outFrame.add(outPanel);
-		outFrame.setVisible(true);
 	
 		return data;
 	}
+	
+	public static Data empsWAboveAvgSal(JFrame jf, String[] requestAttrOrder) {
+	//	boolean status = false;
+		Data data = new Data();
+		if(requestAttrOrder.length == 4){
+
+			try {
+				//defining database driver to use
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				
+				//getting connection from the mysql database
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+				
+				if(con != null) {
+					System.out.println("Connection established!");
+				}
+				else {
+					 System.out.println("Connection Failed! Check output console");
+				}
+	
+				//prepared statement is used for secure access
+				// ? used for data to put in query
+				// actual query to execute is
+				PreparedStatement oPrStmt = con
+						.prepareStatement("Select * FROM emps_with_above_avg_sal");					
+			
+				ResultSet rs = oPrStmt.executeQuery(); // executing the query and getting the resultset from databse
+				
+				//rs.next() shows that the resultset contains nect value or not
+				// for retrieving multiple results, you can use while(rs.next)
+				//int i = 0;
+				while(rs.next()) { //checking while the resultset has any value? 
+					
+					String[] storedArr = new String[requestAttrOrder.length];
+					storedArr[0] = getStringValue(rs, requestAttrOrder[0]);
+					storedArr[1] = getStringValue(rs, requestAttrOrder[1]);
+					storedArr[2] = getStringValue(rs, requestAttrOrder[2]);
+					storedArr[3] = getStringValue(rs, requestAttrOrder[3]);
+					data.dataValues.add(storedArr);
+					
+					
+				}
+		
+				con.close();
+			} catch (Exception e) {
+				System.out.println(e);
+			} 
+		
+		}
+	
+		return data;
+	}
+	
+	public static Data empsWAccts(JFrame jf, String[] requestAttrOrder) {
+		Data data = new Data();
+		if(requestAttrOrder.length == 3){
+			try {
+				//defining database driver to use
+				Class.forName("oracle.jdbc.driver.OracleDriver");
+				
+				//getting connection from the mysql database
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+				
+				if(con != null) {
+					System.out.println("Connection established!");
+				}
+				else {
+					 System.out.println("Connection Failed! Check output console");
+				}
+
+				//prepared statement is used for secure access
+				// ? used for data to put in query
+				// actual query to execute is
+				PreparedStatement oPrStmt = con
+						.prepareStatement("SELECT * FROM emps_with_accts");					
+			
+				ResultSet rs = oPrStmt.executeQuery(); // executing the query and getting the resultset from databse
+
+				//rs.next() shows that the resultset contains nect value or not
+				// for retrieving multiple results, you can use while(rs.next)
+				//int i = 0;
+				while(rs.next()) { //checking while the resultset has any value? 
+					System.out.println("Returned Results, Getting data");
+				
+					String[] storedArr = new String[requestAttrOrder.length];
+					storedArr[0] = getStringValue(rs, requestAttrOrder[0]);
+					storedArr[1] = getStringValue(rs, requestAttrOrder[1]);
+					storedArr[2] = getStringValue(rs, requestAttrOrder[2]);
+					data.dataValues.add(storedArr);
+					
+				}
+		
+				con.close();
+			} catch (Exception e) {
+				System.out.println(e);
+			} 
+		}
+
+		return data;
+	}
+	
+	public static String getStringValue(ResultSet rs, String attr) throws SQLException{
+		String str = "";
+		switch(attr){
+			case "emp_id":
+				str = Integer.toString(rs.getInt(attr)); 
+				break;
+			case "f_name":
+				str = rs.getString(attr);
+				break;
+			case "l_name":
+				str = rs.getString(attr);
+				break;
+			case "sal":
+				str = Double.toString(rs.getDouble(attr));
+				break;
+		}
+		
+		return str;
+	}
+	
+	
 }

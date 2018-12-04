@@ -1,14 +1,17 @@
 package frontend;
 
+import java.util.ArrayList;
+
 import javax.swing.table.AbstractTableModel;
 
 public class CustomTableModel extends AbstractTableModel {
 	
     private String[] columnNames;
-    private String[][] data;
+    private ArrayList<String[]> data;
 
-	public CustomTableModel(String[] colN) {
+	public CustomTableModel(String[] colN, ArrayList<String[]>  data) {
 		this.columnNames = colN.clone();
+		this.data = (ArrayList<String[]>) data.clone();
 	}
 	
 	@Override
@@ -18,21 +21,25 @@ public class CustomTableModel extends AbstractTableModel {
 	}
 
 	@Override
-	public int getRowCount() {
-		// TODO Auto-generated method stub
-		//return data.length;
-		return 0;
+	public int getRowCount() {		
+		return data.size();
 	}
 
 	@Override
-	public Object getValueAt(int arg0, int arg1) {
+	public Object getValueAt(int row, int col) {
 		// TODO Auto-generated method stub
-		return null;
+		return data.get(row)[col];
 	}
 	
 	@Override 
 	public String getColumnName(int col) {
         return columnNames[col].toString();
     }
+	
+	@Override
+	public void setValueAt(Object value, int row, int col) {
+		data.get(row)[col] = (String)value;
+	    fireTableCellUpdated(row, col);
+	}
 
 }

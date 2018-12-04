@@ -40,8 +40,16 @@ public class EmployeePanel extends JPanel {
 			JFrame jf = new JFrame("Employee Info");
 			
 			// Create table
-			String[] colN = {"First Name", "LastName", "Emp_id"};
-			JTable table = new JTable(new CustomTableModel(colN));
+			String[] colN = {"First Name",
+							 "Last Name",
+							 "Employee Id"
+							};
+			
+			Data data = EmployeeFunctions.empsWAccts(jf, 
+					new String[]{StaticVar.FIRST_NAME, StaticVar.LAST_NAME, StaticVar.EMPLOYEEE_ID});
+			
+			
+			JTable table = new JTable(new CustomTableModel(colN, data.dataValues));
 			table.setFillsViewportHeight(true);
 			JScrollPane scrollP = new JScrollPane(table);
 			scrollP.setVisible(true);
@@ -70,6 +78,7 @@ public class EmployeePanel extends JPanel {
 		
 		
 		JButton empsWAbvAvgSal = new JButton("View Employees With Above Avg Salary");
+		
 		empsWAbvAvgSal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -81,8 +90,16 @@ public class EmployeePanel extends JPanel {
 				JFrame jf = new JFrame("Employee Info");
 				
 				// Create table
-				String[] colN = {"Emp_id", "First Name", "LastName", "Salary"};
-				JTable table = new JTable(new CustomTableModel(colN));
+				String[] colN = {"First Name", "LastName","Emp_id" ,"Salary"};
+				
+				Data data = EmployeeFunctions.empsWAboveAvgSal(jf, 
+						new String[]{StaticVar.FIRST_NAME, 
+									StaticVar.LAST_NAME, 
+									StaticVar.EMPLOYEEE_ID,
+									StaticVar.SALARY});
+				
+				
+				JTable table = new JTable(new CustomTableModel(colN, data.dataValues));
 				table.setFillsViewportHeight(true);
 				JScrollPane scrollP = new JScrollPane(table);
 				scrollP.setVisible(true);
@@ -111,6 +128,7 @@ public class EmployeePanel extends JPanel {
 		});
 		
 		JButton empsWBelowAvgSal = new JButton("View Employees With Below Avg Salary");
+		
 		empsWBelowAvgSal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -121,8 +139,15 @@ public class EmployeePanel extends JPanel {
 				JFrame jf = new JFrame("Employee Info");
 				
 				// Create table
-				String[] colN = {"Emp_id", "First Name", "LastName", "Salary"};
-				JTable table = new JTable(new CustomTableModel(colN));
+				String[] colN = {"First Name", "LastName","Emp_id" ,"Salary"};
+				Data data = EmployeeFunctions.empsWBelowAvgSal(jf, 
+						new String[]{StaticVar.FIRST_NAME, 
+									StaticVar.LAST_NAME, 
+									StaticVar.EMPLOYEEE_ID,
+									StaticVar.SALARY});
+				
+				
+				JTable table = new JTable(new CustomTableModel(colN, data.dataValues));
 				table.setFillsViewportHeight(true);
 				JScrollPane scrollP = new JScrollPane(table);
 				scrollP.setVisible(true);
@@ -170,14 +195,14 @@ public class EmployeePanel extends JPanel {
 				label.setAlignmentX(Component.CENTER_ALIGNMENT);
 				label.setFont(StaticVar.MENUFONT);
 				
-				// show yearly salary expense
-				//JPanel yearly = new JPanel();
-				JLabel yearLabel = new JLabel("Yearly Salary Expense: 1000000", JLabel.CENTER);
+				Data data = EmployeeFunctions.calcSalExpense(jf);
+				
+				JLabel yearLabel = new JLabel("Yearly Salary Expense: " + data.yearly, JLabel.CENTER);
 				yearLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				yearLabel.setFont(StaticVar.MENUFONT);
-				// show monthly salary expense
-				//JPanel monthly = new JPanel();
-				JLabel monthLabel = new JLabel("Monthly Salary Expense: 83333", JLabel.CENTER);
+				
+				
+				JLabel monthLabel = new JLabel("Monthly Salary Expense: " + data.monthly, JLabel.CENTER);
 				monthLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				monthLabel.setFont(StaticVar.MENUFONT);
 				
@@ -241,6 +266,7 @@ public class EmployeePanel extends JPanel {
 			day = StaticVar.getDayComboBox(selectedYear, monthDate);
 			day.setSelectedItem(Integer.toString(StaticVar.TODAY.getDayOfMonth())); 
 			
+			datePanel.removeAll();
 			datePanel.add(year);
 			datePanel.add(month);
 			datePanel.add(day);

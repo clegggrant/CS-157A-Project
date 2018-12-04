@@ -6,6 +6,11 @@ public class Data {
 	ArrayList<String> lastName = new ArrayList<>();
 	ArrayList<Integer> employeeID = new ArrayList<>();
 	ArrayList<Double> salary = new ArrayList<>();
-	ArrayList<Double> yearly = new ArrayList<>();
-	ArrayList<Double> monthly = new ArrayList<>();
+
+	public Double yearly;
+	public Double monthly;
+	
+	// ------
+	public ArrayList<String[]> dataValues = new ArrayList<>();
+	
 }
