@@ -81,46 +81,10 @@ create table ACCOUNT
 (
    ACCT_ID              NUMBER(10)             not null,
    EMPLOYEE_ID          NUMBER(10) REFERENCES EMPLOYEE(EMPLOYEE_ID) ON DELETE SET NULL,
-   SSN                  CHAR(11),
+   SSN                  CHAR(11) REFERENCES CUSTOMER(SSN) ON DELETE CASCADE,
    BALANCE              NUMBER(10,2) not null CHECK(BALANCE >= 0),
    OPEN_DATE            DATE                 not null,
    constraint PK_ACCOUNT primary key (ACCT_ID)
-);
-
-/*==============================================================*/
-/* Table: CHECKING                                              */
-/*==============================================================*/
-create table CHECKING 
-(
-   ACCT_ID              NUMBER(10)             not null,
-   EMPLOYEE_ID          NUMBER(10),
-   SSN                  CHAR(11),
-   BALANCE              NUMBER(10,2) not null  CHECK(BALANCE >= 0),
-   OPEN_DATE            DATE                 not null,
-   WITHDRAWL_LIMIT      NUMBER(8,2)          not null,
-   PURCHASE_LIMIT       NUMBER(10,2)         not null,
-   ACCTTYPE             VARCHAR2(10),
-   constraint PK_CHECKING primary key (ACCT_ID)
-);
-
-/*==============================================================*/
-/* Table: CREDIT_CARD                                           */
-/*==============================================================*/
-create table CREDIT_CARD 
-(
-   ACCT_ID              NUMBER(10)             not null,
-   EMPLOYEE_ID          NUMBER(10),
-   SSN                  CHAR(11),
-   BALANCE              NUMBER(10,2) not null CHECK(BALANCE >= 0),
-   OPEN_DATE            DATE                 not null,
-   LIMIT                NUMBER(10,2)         not null,
-   DUE_DATE             DATE,
-   MIN__PAYMENT         NUMBER(10,2),
-   LAST_STATEMENT_BALANCE NUMBER(10,2),
-   LAST_PAYMENT         NUMBER(10,2),
-   INTEREST_RATE        NUMBER(10,2)          not null,
-   ACCTTYPE             VARCHAR2(15),
-   constraint PK_CREDIT_CARD primary key (ACCT_ID)
 );
 
 /*==============================================================*/
@@ -138,11 +102,47 @@ create index EMPLOYEE_ACCOUNT_FK on ACCOUNT (
 );
 
 /*==============================================================*/
+/* Table: CHECKING                                              */
+/*==============================================================*/
+create table CHECKING 
+(
+   ACCT_ID              NUMBER(10) not null REFERENCES ACCOUNT(ACCT_ID) ON DELETE CASCADE,
+   EMPLOYEE_ID          NUMBER(10),
+   SSN                  CHAR(11),
+   BALANCE              NUMBER(10,2) not null  CHECK(BALANCE >= 0),
+   OPEN_DATE            DATE                 not null,
+   WITHDRAWL_LIMIT      NUMBER(8,2)          not null,
+   PURCHASE_LIMIT       NUMBER(10,2)         not null,
+   ACCTTYPE             VARCHAR2(10),
+   constraint PK_CHECKING primary key (ACCT_ID)
+);
+
+/*==============================================================*/
+/* Table: CREDIT_CARD                                           */
+/*==============================================================*/
+create table CREDIT_CARD 
+(
+   ACCT_ID              NUMBER(10) not null REFERENCES ACCOUNT(ACCT_ID) ON DELETE CASCADE,
+   EMPLOYEE_ID          NUMBER(10),
+   SSN                  CHAR(11),
+   BALANCE              NUMBER(10,2) not null CHECK(BALANCE >= 0),
+   OPEN_DATE            DATE                 not null,
+   LIMIT                NUMBER(10,2)         not null,
+   DUE_DATE             DATE,
+   MIN__PAYMENT         NUMBER(10,2),
+   LAST_STATEMENT_BALANCE NUMBER(10,2),
+   LAST_PAYMENT         NUMBER(10,2),
+   INTEREST_RATE        NUMBER(10,2)          not null,
+   ACCTTYPE             VARCHAR2(15),
+   constraint PK_CREDIT_CARD primary key (ACCT_ID)
+);
+
+/*==============================================================*/
 /* Table: LOAN                                                  */
 /*==============================================================*/
 create table LOAN 
 (
-   ACCT_ID              NUMBER(10)             not null,
+   ACCT_ID              NUMBER(10) not null REFERENCES ACCOUNT(ACCT_ID) ON DELETE CASCADE,
    EMPLOYEE_ID          NUMBER(10),
    SSN                  CHAR(11),
    BALANCE              NUMBER(10,2) not null CHECK(BALANCE >=0),
@@ -166,7 +166,7 @@ CREATE INDEX loan_indx ON Loan(remaining_loan_term ASC);
 /*==============================================================*/
 create table SAVINGS 
 (
-   ACCT_ID              NUMBER(10)             not null,
+   ACCT_ID              NUMBER(10) not null REFERENCES ACCOUNT(ACCT_ID) ON DELETE CASCADE,
    EMPLOYEE_ID          NUMBER(10),
    SSN                  CHAR(11),
    BALANCE              NUMBER(10,2) not null CHECK(BALANCE >=0),
@@ -183,11 +183,11 @@ create table SAVINGS
 /*==============================================================*/
 create table TRANSACTION_HISTORY 
 (
-   TRANSACTION_ID       NUMBER(10)             not null,
-   ACCT_ID              NUMBER(10)             not null,
+   TRANSACTION_ID       NUMBER(10)           not null,
+   ACCT_ID              NUMBER(10)           not null,
    TRANSACTION_DATE     DATE                 not null,
    TRANSACTON_AMOUNT    NUMBER(10,2)         not null,
-   "TO"                 NUMBER(10)             not null,
+   "TO"                 NUMBER(10)           not null,
    constraint PK_TRANSACTION_HISTORY primary key (TRANSACTION_ID)
 );
 
@@ -202,11 +202,11 @@ create index TRANSACTION_FK on TRANSACTION_HISTORY (
    add constraint FK_ACCOUNT_EMPLOYEE__EMPLOYEE foreign key (EMPLOYEE_ID)
       references EMPLOYEE (EMPLOYEE_ID) on DELETE SET NULL;*/
 
-alter table ACCOUNT
+/*alter table ACCOUNT
    add constraint FK_ACCOUNT_HAS_ACCOU_CUSTOMER foreign key (SSN)
-      references CUSTOMER (SSN);
+      references CUSTOMER (SSN);*/
 
-alter table CHECKING
+/*alter table CHECKING
    add constraint FK_CHECKING_IS_CHECKI_ACCOUNT foreign key (ACCT_ID)
       references ACCOUNT (ACCT_ID);
 
@@ -220,7 +220,7 @@ alter table LOAN
 
 alter table SAVINGS
    add constraint FK_SAVINGS_IS_SAVING_ACCOUNT foreign key (ACCT_ID)
-      references ACCOUNT (ACCT_ID);
+      references ACCOUNT (ACCT_ID);*/
 
 alter table TRANSACTION_HISTORY
    add constraint FK_TRANSACT_TRANSACTI_ACCOUNT foreign key (ACCT_ID)
@@ -278,6 +278,10 @@ BEGIN
     INTO :new.ACCT_ID
     FROM dual;
     
+    SELECT v_today
+    INTO :new.OPEN_DATE
+    FROM dual;
+    
     INSERT INTO ACCOUNT(ACCT_ID, EMPLOYEE_ID, SSN, BALANCE, OPEN_DATE) VALUES
     (v_next, :new.EMPLOYEE_ID, :new.SSN, :new.BALANCE, v_today);
 END;
@@ -295,6 +299,10 @@ BEGIN
     
     SELECT v_next
     INTO :new.ACCT_ID
+    FROM dual;
+    
+    SELECT v_today
+    INTO :new.OPEN_DATE
     FROM dual;
     
     INSERT INTO ACCOUNT(ACCT_ID, EMPLOYEE_ID, SSN, BALANCE, OPEN_DATE) VALUES
@@ -335,6 +343,10 @@ BEGIN
     INTO :new.ACCT_ID
     FROM dual;
     
+    SELECT v_today
+    INTO :new.OPEN_DATE
+    FROM dual;
+    
     INSERT INTO ACCOUNT(ACCT_ID, EMPLOYEE_ID, SSN, BALANCE, OPEN_DATE) VALUES
     (v_next, :new.EMPLOYEE_ID, :new.SSN, :new.BALANCE, v_today);
 END;
@@ -352,6 +364,10 @@ BEGIN
     
     SELECT v_next
     INTO :new.ACCT_ID
+    FROM dual;
+    
+    SELECT v_today
+    INTO :new.OPEN_DATE
     FROM dual;
     
     INSERT INTO ACCOUNT(ACCT_ID, EMPLOYEE_ID, SSN, BALANCE, OPEN_DATE) VALUES
@@ -430,6 +446,5 @@ BEGIN
     netmonthly := netyearly/12;
 END emp_net_sal;
 /
-
 
 

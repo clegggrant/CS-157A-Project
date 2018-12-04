@@ -1,1 +1,1 @@
-Running sample script order: employee, customer, credit, checking, saving, loan, transaction
+Run "OracleBankSetupv2.sql" First. Then Load the "all_sample_data.sql" file.

@@ -31,7 +31,7 @@ public class EmployeePanel extends JPanel {
 	}
 	
 	private void initialize() {
-		setLayout(new GridLayout(8,1,10,10));
+		setLayout(new GridLayout(7,1,10,10));
 		setBorder(new EmptyBorder(10,10,10,10));
 		
 		JButton empsWAccts = new JButton("View Employees With Accounts");
@@ -110,7 +110,7 @@ public class EmployeePanel extends JPanel {
 				panel.setLayout(bl);
 				
 				// Create Label
-				JLabel label = new JLabel("Employess With Above Average Salary", JLabel.CENTER);
+				JLabel label = new JLabel("Employess With Above Average Salory", JLabel.CENTER);
 				label.setAlignmentX(Component.CENTER_ALIGNMENT);
 				label.setFont(StaticVar.MENUFONT);
 				
@@ -158,7 +158,7 @@ public class EmployeePanel extends JPanel {
 				panel.setLayout(bl);
 				
 				// Create Label
-				JLabel label = new JLabel("Employess With Below Average Salary", JLabel.CENTER);
+				JLabel label = new JLabel("Employess With Below Average Salory", JLabel.CENTER);
 				label.setAlignmentX(Component.CENTER_ALIGNMENT);
 				label.setFont(StaticVar.MENUFONT);
 				
@@ -198,11 +198,12 @@ public class EmployeePanel extends JPanel {
 				
 				Data data = EmployeeFunctions.calcSalExpense(jf);
 				
-                JLabel yearLabel = new JLabel("Yearly Salary Expense: $" + String.format( "%,.2f", data.yearly), JLabel.CENTER);				yearLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                JLabel yearLabel = new JLabel("Yearly Salary Expense: $" + String.format( "%,.2f", data.yearly), JLabel.CENTER);				
+                yearLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				yearLabel.setFont(StaticVar.MENUFONT);
 				
-				
-                JLabel monthLabel = new JLabel("Monthly Salary Expense: $" + String.format( "%,.2f", data.monthly), JLabel.CENTER);				monthLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                JLabel monthLabel = new JLabel("Monthly Salary Expense: $" + String.format( "%,.2f", data.monthly), JLabel.CENTER);			
+                monthLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				monthLabel.setFont(StaticVar.MENUFONT);
 				
 				
@@ -221,14 +222,12 @@ public class EmployeePanel extends JPanel {
 		});
 		
 		JButton calcEmpSalExp = new JButton("Calculate Employee Net Salary");
-		calcSalExp.addActionListener(new ActionListener() {
+		calcEmpSalExp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//call whatever frame or perform whatever action
-				//System.out.println("Calculating Salary Expense by calling function");
-				//boolean result = EmployeeFunctions.calcSalExpense();
-				
 				JFrame jf = new JFrame("Salary Info");
+				
+				Data data = null;
 				
 				JTextField empid = new JTextField();
 				JTextField conempid = new JTextField();
@@ -240,6 +239,7 @@ public class EmployeePanel extends JPanel {
 				if(option == JOptionPane.OK_OPTION) {
 					// Fetch employee info
 					//EmployeeFunctions.fire(jf, empid.getText(), conempid.getText());
+					data = EmployeeFunctions.getNetSalary(jf,empid.getText(), conempid.getText());
 				}
 				
 				
@@ -253,16 +253,14 @@ public class EmployeePanel extends JPanel {
 				label.setAlignmentX(Component.CENTER_ALIGNMENT);
 				label.setFont(StaticVar.MENUFONT);
 				
-				Data data = EmployeeFunctions.calcSalExpense(jf);
 				
-				JLabel yearLabel = new JLabel("Yearly Salary Expense: " + data.yearly, JLabel.CENTER);
-				yearLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				yearLabel.setFont(StaticVar.MENUFONT);
-				
-				
-				JLabel monthLabel = new JLabel("Monthly Salary Expense: " + data.monthly, JLabel.CENTER);
-				monthLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				monthLabel.setFont(StaticVar.MENUFONT);
+				 JLabel yearLabel = new JLabel("Yearly Net Salary: $" + String.format( "%,.2f", data.yearly), JLabel.CENTER);				
+	             yearLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+	             yearLabel.setFont(StaticVar.MENUFONT);
+					
+	             JLabel monthLabel = new JLabel("Monthly Net Salary: $" + String.format( "%,.2f", data.monthly), JLabel.CENTER);			
+	             monthLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+	             monthLabel.setFont(StaticVar.MENUFONT);
 				
 				
 				// Adding order
