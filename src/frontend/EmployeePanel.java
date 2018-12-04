@@ -22,7 +22,7 @@ public class EmployeePanel extends JPanel {
 	
 	//JComboBoxes for keeping track of date for panels that require dates
 	private JPanel datePanel = new JPanel();
-	private JComboBox year, month, day;
+	private JComboBox<String> year, month, day;
 	
 	public EmployeePanel(JFrame parentFrame) {
 		super();
@@ -197,6 +197,63 @@ public class EmployeePanel extends JPanel {
 				
 				Data data = EmployeeFunctions.calcSalExpense(jf);
 				
+                JLabel yearLabel = new JLabel("Yearly Salary Expense: $" + String.format( "%,.2f", data.yearly), JLabel.CENTER);				yearLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+				yearLabel.setFont(StaticVar.MENUFONT);
+				
+				
+                JLabel monthLabel = new JLabel("Monthly Salary Expense: $" + String.format( "%,.2f", data.monthly), JLabel.CENTER);				monthLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+				monthLabel.setFont(StaticVar.MENUFONT);
+				
+				
+				// Adding order
+				panel.add(label);
+				panel.add(Box.createRigidArea(new Dimension(5,15)));
+				panel.add(yearLabel);
+				panel.add(monthLabel);
+				
+				jf.add(panel);
+				
+				jf.setSize(StaticVar.WINDIMENSION.width/4, StaticVar.WINDIMENSION.height/4);
+				jf.setLocationRelativeTo(null);
+				jf.setVisible(true);
+			}
+		});
+		
+		JButton calcEmpSalExp = new JButton("Calculate Employee Net Salary");
+		calcSalExp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//call whatever frame or perform whatever action
+				//System.out.println("Calculating Salary Expense by calling function");
+				//boolean result = EmployeeFunctions.calcSalExpense();
+				
+				JFrame jf = new JFrame("Salary Info");
+				
+				JTextField empid = new JTextField();
+				JTextField conempid = new JTextField();
+				Object[] message = {
+					"Employee ID: ", empid,
+					"Confirm Employee ID: ", conempid
+				};
+				int option = JOptionPane.showConfirmDialog(null, message, "Enter Employee ID", JOptionPane.OK_CANCEL_OPTION);
+				if(option == JOptionPane.OK_OPTION) {
+					// Fetch employee info
+					//EmployeeFunctions.fire(jf, empid.getText(), conempid.getText());
+				}
+				
+				
+				// Create a panel to hold the label and table
+				JPanel panel = new JPanel();
+				BoxLayout bl = new BoxLayout(panel, BoxLayout.Y_AXIS);
+				panel.setLayout(bl);
+				
+				// Create Label
+				JLabel label = new JLabel("Net Salary For Employee: ", JLabel.CENTER);
+				label.setAlignmentX(Component.CENTER_ALIGNMENT);
+				label.setFont(StaticVar.MENUFONT);
+				
+				Data data = EmployeeFunctions.calcSalExpense(jf);
+				
 				JLabel yearLabel = new JLabel("Yearly Salary Expense: " + data.yearly, JLabel.CENTER);
 				yearLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				yearLabel.setFont(StaticVar.MENUFONT);
@@ -330,6 +387,7 @@ public class EmployeePanel extends JPanel {
 		add(empsWAccts);
 		add(empsWAbvAvgSal);
 		add(empsWBelowAvgSal);
+		add(calcEmpSalExp);
 		add(calcSalExp);
 		add(hire);
 		add(fire);
