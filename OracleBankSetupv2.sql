@@ -232,6 +232,9 @@ alter table TRANSACTION_HISTORY
 
 CREATE OR REPLACE VIEW remaining_loan_view AS 
 	SELECT acct_id as acct_id, interest_rate as intr_rate, remaining_loan_term as remain_term FROM LOAN;
+    
+CREATE OR REPLACE VIEW all_emps AS
+    SELECT * FROM EMPLOYEE ORDER BY SALARY DESC;
 
 CREATE OR REPLACE VIEW emps_with_accts AS 
     SELECT DISTINCT EMPLOYEE_ID as emp_id, FIRST_NAME as f_name, LAST_NAME as l_name
@@ -299,6 +302,15 @@ BEGIN
 END;
 /
 
+CREATE OR REPLACE TRIGGER new_hire_attempt
+INSTEAD OF INSERT ON all_emps
+FOR EACH ROW
+BEGIN
+INSERT INTO EMPLOYEE(POSITION, SALARY, HIRE_DATE, FIRST_NAME, LAST_NAME, SOCIAL_SECURITY)
+VALUES(:new.POSITION, :new.SALARY, :new.HIRE_DATE, :new.FIRST_NAME, :new.LAST_NAME, :new.SOCIAL_SECURITY);
+END;
+/
+
 CREATE OR REPLACE TRIGGER new_hire 
 BEFORE INSERT ON EMPLOYEE 
 FOR EACH ROW 
@@ -357,17 +369,40 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE PROCEDURE calc_salary_exp(yearly out NUMBER, monthly out NUMBER) AS 
-BEGIN 
-    SELECT SUM(SALARY) INTO yearly FROM EMPLOYEE;
-    monthly := yearly/12; 
-    
+CREATE OR REPLACE PROCEDURE calc_salary_exp(yearly out NUMBER, monthly out NUMBER) IS
+    CURSOR emp_cur IS SELECT SALARY from EMPLOYEE;
+    v_temp number(10,2);
+    v_benefits number(10,2);
+BEGIN
+    yearly := 0;
+    OPEN emp_cur;
+LOOP
+    FETCH emp_cur INTO v_temp;
+    EXIT WHEN emp_cur%NOTFOUND;
+    IF v_temp < 41629.00 THEN
+        v_benefits := 1000.00;
+        v_temp := v_temp + (v_temp * .06) + v_benefits;
+    ELSIF v_temp < 52612.00 THEN
+        v_benefits := 2000.00;
+        v_temp := v_temp + (v_temp * .08) + v_benefits;
+    ELSIF v_temp < 268750.00 THEN
+        v_benefits := 3000.00;
+        v_temp := v_temp + (v_temp * .093) + v_benefits;
+    ELSE
+        v_benefits := 4000.00;
+        v_temp := v_temp + (v_temp * .103) + v_benefits;
+    END IF;
+    yearly := yearly + v_temp;
+    dbms_output.put_line(yearly);
+END LOOP;
+monthly := yearly/12;
+CLOSE emp_cur;
 END calc_salary_exp;
 /
 
 CREATE OR REPLACE PROCEDURE hire (position in varchar2, salary in number, hiredate in date, first in varchar2, last in varchar2, social in char) IS
 BEGIN
-    INSERT INTO EMPLOYEE(POSITION, SALARY, HIRE_DATE, FIRST_NAME, LAST_NAME, SOCIAL_SECURITY) VALUES (position, salary, hiredate, first, last, social);
+    INSERT INTO all_emps(POSITION, SALARY, HIRE_DATE, FIRST_NAME, LAST_NAME, SOCIAL_SECURITY) VALUES (position, salary, hiredate, first, last, social);
 END hire;
 /
 
@@ -375,8 +410,9 @@ CREATE OR REPLACE PROCEDURE emp_net_sal(emp_id in NUMBER, netyearly out NUMBER, 
     v_benefits number(10,2);
 BEGIN
     netyearly := 0;
+    netmonthly := 0;
     
-    SELECT SALARY INTO netyearly FROM EMPLOYEE WHERE EMPLOYEE_ID =      emp_id;
+    SELECT SALARY INTO netyearly FROM EMPLOYEE WHERE EMPLOYEE_ID = emp_id;
     
     IF netyearly < 41629.00 THEN
         v_benefits :=1000.00;

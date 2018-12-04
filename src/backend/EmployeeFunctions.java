@@ -18,7 +18,59 @@ import oracle.jdbc.OracleTypes;
 
 public class EmployeeFunctions {
 	
+	public static Data getNetSalary(JFrame jf, String empID) {
+		boolean status = false;
+		
+		Data data = new Data();
+		try {
+			//defining database driver to use
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			
+			//getting connection from the mysql database
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
+			
+			if(con != null) {
+				System.out.println("Connection established!");
+			}
+			else {
+				 System.out.println("Connection Failed! Check output console");
+			}
+
+			//prepared statement is used for secure access
+			// ? used for data to put in query
+			// actual query to execute is
+			CallableStatement cStmt = con
+					.prepareCall("{CALL emp_net_sal(?,?,?)}");				
+		
+		
+			//empID = "1000000008";
+			cStmt.setString(1, empID);
+			cStmt.registerOutParameter(2, OracleTypes.NUMBER);
+			cStmt.registerOutParameter(3, OracleTypes.NUMBER);
+			
+			cStmt.execute();
+		
+			status = true;
+			
+			double yearly = cStmt.getDouble(2);
+			double monthly = cStmt.getDouble(3);
+			System.out.println("Yearly Sal for Emp " + empID + ": " + yearly);
+			System.out.println("Monthly Sal for Emp " + empID + ": " + monthly);
+
+			
+			//data.yearly.add(yearly);
+			//data.monthly.add(monthly);
+			data.yearly = yearly;
+			data.monthly = monthly;
+				
+			
+			con.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		} 
 	
+		return data;
+	}
 	public static boolean hire(JFrame jf, String firstname, String lastname, String ssn, String conssn, String salary, String job, String startdate) {
 		if(firstname.length() > 15 || lastname.length() > 15) {
 			JOptionPane.showMessageDialog(jf, "First and Last names must both be under 15 characers!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -62,12 +114,7 @@ public class EmployeeFunctions {
 			//prepared statement is used for secure access
 			// ? used for data to put in query
 			// actual query to execute is
-//			PreparedStatement oPrStmt = con
-//					.prepareStatement("INSERT INTO EMPLOYEE "
-//							+ "(position, salary, hire_date, first_name, last_name, social_security)"
-//							+ " VALUES(?,?,TO_DATE(?,'DD-MON-YYYY'),?,?,?)");					
-			
-			
+
 			CallableStatement cStmt = con
 					.prepareCall("{CALL hire(?,?,?,?,?,?)}");			
 			
@@ -387,6 +434,4 @@ public class EmployeeFunctions {
 		
 		return str;
 	}
-	
-	
 }
