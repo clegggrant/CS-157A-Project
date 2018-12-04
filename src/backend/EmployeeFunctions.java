@@ -37,7 +37,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -107,7 +107,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -119,7 +119,8 @@ public class EmployeeFunctions {
 			//prepared statement is used for secure access
 			// ? used for data to put in query
 			// actual query to execute is
-
+			con.setAutoCommit(false);
+			
 			CallableStatement cStmt = con
 					.prepareCall("{CALL hire(?,?,?,?,?,?)}");			
 			
@@ -134,6 +135,7 @@ public class EmployeeFunctions {
 			
 			cStmt.execute(); // executing the query and getting the updated/inserted row counts from databse
 			
+			con.commit();
 			
 			status = true;
 			
@@ -175,7 +177,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -187,6 +189,7 @@ public class EmployeeFunctions {
 			//prepared statement is used for secure access
 			// ? used for data to put in query
 			// actual query to execute is
+			con.setAutoCommit(false);
 			PreparedStatement oPrStmt = con
 					.prepareStatement("DELETE FROM EMPLOYEE WHERE employee_id=?");					
 			
@@ -195,7 +198,7 @@ public class EmployeeFunctions {
 			oPrStmt.setInt(1, Integer.parseInt(empid));
 
 			int nUpdatedRecords = oPrStmt.executeUpdate(); // executing the query and getting the updated/inserted row counts from databse
-			
+			con.commit();
 			if(nUpdatedRecords>0){ // check that the data is deleted successfully or not
 				status = true;
 				
@@ -228,7 +231,7 @@ public class EmployeeFunctions {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			
 			//getting connection from the mysql database
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 			
 			if(con != null) {
 				System.out.println("Connection established!");
@@ -276,7 +279,7 @@ public class EmployeeFunctions {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 				
 				if(con != null) {
 					System.out.println("Connection established!");
@@ -330,7 +333,7 @@ public class EmployeeFunctions {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 				
 				if(con != null) {
 					System.out.println("Connection established!");
@@ -380,8 +383,7 @@ public class EmployeeFunctions {
 				Class.forName("oracle.jdbc.driver.OracleDriver");
 				
 				//getting connection from the mysql database
-				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
-				
+				Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","admin","admin");
 				if(con != null) {
 					System.out.println("Connection established!");
 				}
