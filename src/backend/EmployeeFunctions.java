@@ -20,14 +20,14 @@ public class EmployeeFunctions {
 	public static Data getNetSalary(JFrame jf, String empid, String conempid) {
 		if(!empid.equals(conempid)) {
 			JOptionPane.showMessageDialog(jf, "Employee IDs do not match!", "Error", JOptionPane.ERROR_MESSAGE);
-			
+			return null;
 		}
 		String pattern = "\\d{10}";
 		Pattern p = Pattern.compile(pattern);
 		Matcher m = p.matcher(empid);
 		if(empid.length() != 10 || !m.find()) {
 			JOptionPane.showMessageDialog(jf, "Employee ID should be 10 digit number!", "Error", JOptionPane.ERROR_MESSAGE);
-			
+			return null;
 		}
 		
 		Data data = new Data();
