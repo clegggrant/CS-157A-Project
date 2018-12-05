@@ -18,4 +18,7 @@ public class StaticFunc {
 			return new JComboBox<String>((String[]) daysInMonth.toArray(new String[0]));
 			
 		}
+		
+		
+	
 }

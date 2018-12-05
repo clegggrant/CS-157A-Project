@@ -1,7 +1,7 @@
 package frontend;
 
-import java.util.ArrayList;
 
+import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 public class CustomTableModel extends AbstractTableModel {
@@ -10,9 +10,17 @@ public class CustomTableModel extends AbstractTableModel {
     private ArrayList<String[]> data;
 
 	public CustomTableModel(String[] colN, ArrayList<String[]>  data) {
-		this.columnNames = colN.clone();
-		this.data = (ArrayList<String[]>) data.clone();
+		this.columnNames = colN;
+		this.data = data;
 	}
+	
+	private final Class ColumnClass = String.class;
+		 
+	@Override
+    public Class<?> getColumnClass(int columnIndex)
+    {
+        return ColumnClass;
+    }
 	
 	@Override
 	public int getColumnCount() {

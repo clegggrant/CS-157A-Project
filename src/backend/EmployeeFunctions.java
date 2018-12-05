@@ -18,53 +18,7 @@ import oracle.jdbc.OracleTypes;
 
 public class EmployeeFunctions {
 
-	public static Data viewAllEmps(JFrame jf, String[] requestAttrOrder) {
-		Data data = new Data();
-
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-
-			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
-
-			if(con != null) {
-				System.out.println("Connection established!");
-			}
-			else {
-				System.out.println("Connection failed! Check output console.");
-			}
-
-			PreparedStatement oPrStmt = con
-						.prepareStatement("Select * FROM all_emps");					
-			
-				ResultSet rs = oPrStmt.executeQuery(); 
-				
-				while(rs.next()) { 
-					System.out.println("Returned Results, Getting data");
-					
-
-					String[] storedArr = new String[requestAttrOrder.length];
-					storedArr[0] = getStringValue(rs, requestAttrOrder[0]);
-					storedArr[1] = getStringValue(rs, requestAttrOrder[1]);
-					storedArr[2] = getStringValue(rs, requestAttrOrder[2]);
-					storedArr[3] = getStringValue(rs, requestAttrOrder[3]);
-					storedArr[4] = getStringValue(rs, requestAttrOrder[4]);
-					storedArr[5] = getStringValue(rs, requestAttrOrder[5]);
-					storedArr[6] = getStringValue(rs, requestAttrOrder[6]);
-					data.dataValues.add(storedArr);
-					
-					
-				}
-		
-				con.close();
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-		
-		}
 	
-		return data;
-	
-	}
 	
 	public static Data getNetSalary(JFrame jf, String empid, String conempid) {
 		if(!empid.equals(conempid)) {
@@ -85,13 +39,6 @@ public class EmployeeFunctions {
 			
 			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 			
-			if(con != null) {
-				System.out.println("Connection established!");
-			}
-			else {
-				 System.out.println("Connection Failed! Check output console");
-			}
-
 			CallableStatement cStmt = con
 					.prepareCall("{CALL emp_net_sal(?,?,?)}");				
 		
@@ -205,12 +152,6 @@ public class EmployeeFunctions {
 			
 			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
 			
-			if(con != null) {
-				System.out.println("Connection established!");
-			}
-			else {
-				 System.out.println("Connection Failed! Check output console");
-			}
 
 			con.setAutoCommit(false);
 			PreparedStatement oPrStmt = con
@@ -291,9 +232,7 @@ public class EmployeeFunctions {
 				ResultSet rs = oPrStmt.executeQuery(); 
 				
 				while(rs.next()) { 
-					System.out.println("Returned Results, Getting data");
 					
-
 					String[] storedArr = new String[requestAttrOrder.length];
 					storedArr[0] = getStringValue(rs, requestAttrOrder[0]);
 					storedArr[1] = getStringValue(rs, requestAttrOrder[1]);
@@ -365,7 +304,6 @@ public class EmployeeFunctions {
 				ResultSet rs = oPrStmt.executeQuery(); 
 
 				while(rs.next()) { 
-					System.out.println("Returned Results, Getting data");
 				
 					String[] storedArr = new String[requestAttrOrder.length];
 					storedArr[0] = getStringValue(rs, requestAttrOrder[0]);
@@ -391,6 +329,43 @@ public class EmployeeFunctions {
 		return data;
 	}
 	
+	public static Data viewAllEmps(JFrame jf, String[] requestAttrOrder) {
+		Data data = new Data();
+
+		try{
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe","Client","password");
+
+
+			PreparedStatement oPrStmt = con
+						.prepareStatement("Select * FROM all_emps");					
+			
+				ResultSet rs = oPrStmt.executeQuery(); 
+				
+				while(rs.next()) { 
+
+					String[] storedArr = new String[requestAttrOrder.length];
+					storedArr[0] = getStringValue(rs, requestAttrOrder[0]);
+					storedArr[1] = getStringValue(rs, requestAttrOrder[1]);
+					storedArr[2] = getStringValue(rs, requestAttrOrder[2]);
+					storedArr[3] = getStringValue(rs, requestAttrOrder[3]);
+					storedArr[4] = getStringValue(rs, requestAttrOrder[4]);
+					storedArr[5] = getStringValue(rs, requestAttrOrder[5]);
+					storedArr[6] = getStringValue(rs, requestAttrOrder[6]);
+					data.dataValues.add(storedArr);
+					
+					
+				}
+		
+				con.close();
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+		return data;
+
+	}
+	
 	public static String getStringValue(ResultSet rs, String attr) throws SQLException{
 		String str = "";
 		switch(attr){
@@ -406,11 +381,11 @@ public class EmployeeFunctions {
 			case "ssn":
 				str = rs.getString(attr);
 				break;
-			case "position"
+			case "position":
 				str = rs.getString(attr);
 				break;
-			case "hire_date"
-				str = rs.getSTring(attr);
+			case "hire_date":
+				str = rs.getDate(attr).toString();
 				break;
 			case "sal":
 				str = Double.toString(rs.getDouble(attr));

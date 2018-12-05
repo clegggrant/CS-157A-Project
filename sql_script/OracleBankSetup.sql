@@ -3,24 +3,15 @@
 /* Created on:     11/30/2018 9:28:18 AM                        */
 /*==============================================================*/
 
+CREATE USER Client IDENTIFIED BY password;
 
-/*alter table ACCOUNT
-   drop constraint FK_ACCOUNT_EMPLOYEE__EMPLOYEE;*/
+GRANT CONNECT, CREATE TABLE, CREATE VIEW, CREATE PROCEDURE, CREATE TRIGGER, CREATE SEQUENCE to Client;
 
-alter table ACCOUNT
-   drop constraint FK_ACCOUNT_HAS_ACCOU_CUSTOMER;
+GRANT UNLIMITED TABLESPACE TO Client;
 
-alter table CHECKING
-   drop constraint FK_CHECKING_IS_CHECKI_ACCOUNT;
+CONNECT Client/password;
 
-alter table CREDIT_CARD
-   drop constraint FK_CREDIT_C_IS_CREDIT_ACCOUNT;
-
-alter table LOAN
-   drop constraint FK_LOAN_IS_LOAN_ACCOUNT;
-
-alter table SAVINGS
-   drop constraint FK_SAVINGS_IS_SAVING_ACCOUNT;
+ALTER SESSION SET CURRENT_SCHEMA = Client;
 
 alter table TRANSACTION_HISTORY
    drop constraint FK_TRANSACT_TRANSACTI_ACCOUNT;
@@ -198,30 +189,6 @@ create index TRANSACTION_FK on TRANSACTION_HISTORY (
    ACCT_ID ASC
 );
 
-/*alter table ACCOUNT
-   add constraint FK_ACCOUNT_EMPLOYEE__EMPLOYEE foreign key (EMPLOYEE_ID)
-      references EMPLOYEE (EMPLOYEE_ID) on DELETE SET NULL;*/
-
-/*alter table ACCOUNT
-   add constraint FK_ACCOUNT_HAS_ACCOU_CUSTOMER foreign key (SSN)
-      references CUSTOMER (SSN);*/
-
-/*alter table CHECKING
-   add constraint FK_CHECKING_IS_CHECKI_ACCOUNT foreign key (ACCT_ID)
-      references ACCOUNT (ACCT_ID);
-
-alter table CREDIT_CARD
-   add constraint FK_CREDIT_C_IS_CREDIT_ACCOUNT foreign key (ACCT_ID)
-      references ACCOUNT (ACCT_ID);
-
-alter table LOAN
-   add constraint FK_LOAN_IS_LOAN_ACCOUNT foreign key (ACCT_ID)
-      references ACCOUNT (ACCT_ID);
-
-alter table SAVINGS
-   add constraint FK_SAVINGS_IS_SAVING_ACCOUNT foreign key (ACCT_ID)
-      references ACCOUNT (ACCT_ID);*/
-
 alter table TRANSACTION_HISTORY
    add constraint FK_TRANSACT_TRANSACTI_ACCOUNT foreign key (ACCT_ID)
       references ACCOUNT (ACCT_ID);
@@ -234,7 +201,7 @@ CREATE OR REPLACE VIEW remaining_loan_view AS
 	SELECT acct_id as acct_id, interest_rate as intr_rate, remaining_loan_term as remain_term FROM LOAN;
     
 CREATE OR REPLACE VIEW all_emps AS
-    SELECT * FROM EMPLOYEE ORDER BY SALARY DESC;
+    SELECT EMPLOYEE_ID as emp_id, FIRST_NAME as f_name, LAST_NAME as l_name, SOCIAL_SECURITY as ssn, POSITION as position, HIRE_DATE as hire_date, SALARY as sal FROM EMPLOYEE ORDER BY SALARY DESC;
 
 CREATE OR REPLACE VIEW emps_with_accts AS 
     SELECT DISTINCT EMPLOYEE_ID as emp_id, FIRST_NAME as f_name, LAST_NAME as l_name
@@ -315,7 +282,7 @@ INSTEAD OF INSERT ON all_emps
 FOR EACH ROW
 BEGIN
 INSERT INTO EMPLOYEE(POSITION, SALARY, HIRE_DATE, FIRST_NAME, LAST_NAME, SOCIAL_SECURITY)
-VALUES(:new.POSITION, :new.SALARY, :new.HIRE_DATE, :new.FIRST_NAME, :new.LAST_NAME, :new.SOCIAL_SECURITY);
+VALUES(:new.position, :new.sal, :new.hire_date, :new.f_name, :new.l_name, :new.ssn);
 END;
 /
 
@@ -418,7 +385,7 @@ END calc_salary_exp;
 
 CREATE OR REPLACE PROCEDURE hire (position in varchar2, salary in number, hiredate in date, first in varchar2, last in varchar2, social in char) IS
 BEGIN
-    INSERT INTO all_emps(POSITION, SALARY, HIRE_DATE, FIRST_NAME, LAST_NAME, SOCIAL_SECURITY) VALUES (position, salary, hiredate, first, last, social);
+    INSERT INTO all_emps(position, sal, hire_date, f_name, l_name, ssn) VALUES (position, salary, hiredate, first, last, social);
 END hire;
 /
 
@@ -446,5 +413,4 @@ BEGIN
     netmonthly := netyearly/12;
 END emp_net_sal;
 /
-
 
