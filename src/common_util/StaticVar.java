@@ -1,7 +1,6 @@
 package common_util;
 
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -10,13 +9,12 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
-import javax.swing.JTable;
-import javax.swing.table.TableCellRenderer;
 
 
 /*
  * A class that keeps all the static final variable
  * for the front end
+ * 
  * 
  */
 
@@ -54,7 +52,11 @@ public class StaticVar {
 											"JUL","AUG","SEP",
 											"OCT","NOV","DEC"};
 	
-
+	// Query for employee table selection
+	public static final String VIEWALL = "Select * FROM all_emps";
+	public static final String VIEWACC = "SELECT * FROM emps_with_accts";
+	public static final String ABOVEAVG = "Select * FROM emps_with_above_avg_sal";
+	public static final String BELOWAVG = "Select * FROM emps_with_below_avg_sal";
 	
 }
 

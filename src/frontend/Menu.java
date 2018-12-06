@@ -7,11 +7,19 @@ import common_util.StaticVar;
 import java.awt.*;
 import java.awt.event.*;
 
+/*
+ * 	The main menu of the application
+ * 	
+ *  author: Grant Clegg, Monty Saengsavang, Yu Jun Zhao
+ * 
+ */
 public class Menu {
 	
 	// The main frame
 	private JFrame jf = new JFrame("Bank Management System");
-	private JPanel cardPanel = new JPanel(new CardLayout());; // for switching panels.
+	
+	// For switching panels.
+	private JPanel cardPanel = new JPanel(new CardLayout());
 	
 
 	public Menu() {
@@ -42,7 +50,7 @@ public class Menu {
 		menuPanel.setLayout(new GridLayout(3,1,20,20));
 		menuPanel.setBorder(new EmptyBorder(20,20,20,20));
 		
-		//create empManag button
+			//Link to employee panel
 			JButton employeeManagement = new JButton("Employee Management");
 			employeeManagement.setAlignmentX(Component.CENTER_ALIGNMENT);
 			employeeManagement.addActionListener(new ActionListener() {
@@ -58,6 +66,7 @@ public class Menu {
 										
 				}
 			});
+			
 			
 			
 			JButton transactionInfo = new JButton("Transaction Information");

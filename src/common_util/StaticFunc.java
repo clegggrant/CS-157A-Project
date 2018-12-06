@@ -7,8 +7,9 @@ import java.util.stream.IntStream;
 
 import javax.swing.JComboBox;
 
+//UTIL/HELPER FUNCTIONS
 public class StaticFunc {
-	// UTIL/HELPER FUNCTIONS
+	
 		public static final JComboBox<String> getDayComboBox(int selectedYear, int monthDate){
 			YearMonth yearMonthObj = YearMonth.of(selectedYear, monthDate);
 			int numOfDays = yearMonthObj.lengthOfMonth();
