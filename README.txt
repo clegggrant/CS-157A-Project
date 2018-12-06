@@ -1,5 +1,5 @@
-				Bank Management System Setup
-1. Makes sure you have Java 8 or newer installed
+﻿				Bank Management System Setup
+1. Make sure you have Java 8 or newer installed. 
 
 2. You will need to have Oracle 11g installed. You can do so from this link.
 
