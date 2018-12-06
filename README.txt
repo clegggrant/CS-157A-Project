@@ -1,7 +1,7 @@
 ﻿				Bank Management System Setup
 1. Make sure you have Java 8 or newer installed. 
 
-2. You will need to have Oracle 11g installed. You can do so from this link.
+2. You will need to have Oracle 11g installed.
 
 	a. IMPORTANT: Installation asks you to make a password. Remember that password. You will need it in the next step to create the Client user.
 
