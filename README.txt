@@ -3,11 +3,11 @@
 
 2. You will need to have Oracle 11g installed. You can do so from this link.
 
-	a. IMPORTANT: Installation asks you to make a password. Remember that password. You 	   will need it in the next step to create the Client user.
+	a. IMPORTANT: Installation asks you to make a password. Remember that password. You will need it in the next step to create the Client user.
 
-3. Make sure the database is running. You can run the Start Database file was that created    during Installation.
+3. Make sure the database is running. You can run the Start Database file was that created during Installation.
 
-4. Once you have 11g downloaded and installed, run the sql terminal and execute the       following steps
+4. Once you have 11g downloaded and installed, run the sql terminal and execute the following steps
 
 	a. CONNECT SYS/password AS SYSDBA
 
@@ -22,7 +22,7 @@
 
 	a. If on windows 
 
-	   @îc:\my\file\path\scriptNameHere.sqlî 
+	   @‚Äùc:\my\file\path\scriptNameHere.sql‚Äù 
 
 	b. If on linux 
 
